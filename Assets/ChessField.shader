@@ -14,7 +14,7 @@
 		#pragma surface surf Standard fullforwardshadows
 
 		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 3.0
+		#pragma target 4.0
 
 		sampler2D _MainTex;
 
@@ -32,10 +32,15 @@
 			// Albedo comes from a texture tinted by color
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
-			float2 wp = IN.worldPos.xz;
+			float2 wp = IN.worldPos.xz + float2(1000,1000);
 			wp += float2(0.5f, 0.5f);
-			wp %= 1.0f;
-			wp = abs(float2(0.5f, 0.5f) - wp);
+			wp = float2(fmod(wp.x,1.0f), fmod(wp.y, 1.0f));
+			//wp = float2(0.5f, 0.5f) - wp;
+			wp = float2(abs(wp.x), abs(wp.y));
+			if (wp.x < 0.1 || wp.y < 0.1)
+			{
+				o.Albedo = half3(0, 0, 0);
+			}
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
