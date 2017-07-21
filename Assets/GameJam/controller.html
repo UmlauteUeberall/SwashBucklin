@@ -1,0 +1,285 @@
+<html>
+    <head>
+        <script type="text/javascript"src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
+        <script type="text/javascript">
+            navigator.vibrate = (navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate);
+
+            var airconsole;
+
+            function init()
+            {
+                airconsole = new AirConsole({ "orientation": "landscape" });
+                airconsole.onMessage = function (from, data)
+                {
+                    HandleAirconsoleMessage(from, data);
+                }
+
+                airconsole.onActivePlayersChange = function (player_number)
+                {
+                    HandleActivePlayersChange(player_number);
+                }
+
+                airconsole.onReady = function ()
+                {
+                    HandleGameReady();
+                }
+            }
+			
+			function HandleAirconsoleMessage(from, data)
+			{
+				if (from == AirConsole.SCREEN && data.vibrate)
+				{
+					navigator.vibrate(data.vibrate);
+					console.log("Vibrating: " + data.vibrate);
+				}
+			}
+			
+			function HandleActivePlayersChange(player_number)
+			{
+				
+			}
+			
+			function HandleGameReady()
+			{
+			}
+			
+			function updateUI(HealthLeft, Token_Gun, Token_Straight, Token_Left, Token_Right, Token_Hook)
+			{
+				
+			}
+
+            function move(amount)
+            {
+                airconsole.message(AirConsole.SCREEN, { move: amount })
+            }
+			
+			function UpButtonClick()
+			{
+				alert("Up Button!");
+			}
+			
+			function LeftButtonClick()
+			{
+				alert("Left Button!");
+			}
+			
+			function RightButtonClick()
+			{
+				alert("Right Button!");
+			}
+			
+			function HookButtonClick()
+			{
+				alert("Hook Button!");
+			}
+			
+			function ReadyButtonClick()
+			{
+				alert("Ready Button!");
+			}
+			
+			function FirstMoveGunLeftButtonClick()
+			{
+				alert("First Move Gun Left Button!");
+			}
+			
+			function FirstMoveGunRightButtonClick()
+			{
+				alert("First Move Gun Right Button!");
+			}
+			
+			function FirstMoveButtonClick()
+			{
+				alert("First Move Button!");
+			}
+			
+			function SecondMoveGunLeftButtonClick()
+			{
+				alert("Second Move Gun Left Button!");
+			}
+			
+			function SecondMoveGunRightButtonClick()
+			{
+				alert("Second Move Gun Right Button!");
+			}
+			
+			function SecondMoveButtonClick()
+			{
+				alert("Second Move Button!");
+			}
+			
+			function ThirdMoveGunLeftButtonClick()
+			{
+				alert("Third Move Gun Left Button!");
+			}
+			
+			function ThirdMoveGunRightButtonClick()
+			{
+				alert("Third Move Gun Right Button!");
+			}
+			
+			function ThirdMoveButtonClick()
+			{
+				alert("Third Move Button!");
+			}
+			
+			function FourthMoveGunLeftButtonClick()
+			{
+				alert("Fourth Move Gun Left Button!");
+			}
+			
+			function FourthMoveGunRightButtonClick()
+			{
+				alert("Fourth Move Gun Right Button!");
+			}
+			
+			function FourthMoveButtonClick()
+			{
+				alert("Fourth Move Button!");
+			}
+        </script>
+        <style type="text/css">
+            @font-face
+            {
+                font-family: 'Arial';
+            }
+
+            html, body
+            {
+                height: 100%;
+				width: 100%;
+                margin: 0px;
+                font-family: 'PressStart2P', sans-serif;
+                color: Black;
+                text-align: center;
+                background-color: White;
+            }
+
+            .button
+            {
+                display: inline-block;
+                height: 45%;
+                width: 98%;
+                background-color: #222;
+                position: relative;
+            }
+
+            .button_label
+            {
+                position: absolute;
+                left: 0px;
+                width: 100%;
+                top: 50%;
+                margin-top: -6px;
+            }
+			
+            #player_id
+            {
+                position: absolute;
+                top: 50%;
+                left: 0%;
+                width: 100%;
+                margin-top: -8px;
+                color: #777;
+            }
+        </style>
+    </head>
+    <body onload="init()">
+		<div id="contentBox" style="width:101%">
+			<div style="float:left; width:33%; height:100%">
+				<div style="float:top; height:20%;">
+					<div style="float:left; width:25%; height:100%;">
+						<img id="Health1" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+					</div>
+					<div style="float:left; width:25%; height:100%;">
+						<img id="Health2" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+					</div>
+					<div style="float:left; width:25%; height:100%;">
+						<img id="Health3" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+					</div>
+					<div style="float:left; width:25%; height:100%;">
+						<img id="Health4" src="Heart_Empty.png" style="float:left; width:80%; height:80%; margin:10%"/>
+					</div>
+				</div>
+				<div style="float:top; height:40%;">
+					<div style="float:left; width:25%; height:100%;"/>
+					</div>
+					<div style="float:left; width:50%; height:100%;">
+						<img id="UpButton" src="Arrow_Up.png" style="float:center; width:80%; height:80%; margin:10%" onclick="UpButtonClick()"/>
+					</div>
+					<div style="float:left; width:25%; height:100%;">
+					</div>
+				</div>
+				<div style="float:top; height:40%;">
+					<div style="float:left; width:50%; height:100%;">
+						<img id="LeftButton" src="Arrow_Left.png" style="float:center; width:80%; height:80%; margin:10%" onclick="LeftButtonClick()"/>
+					</div>
+					<div style="float:left; width:50%; height:100%;">
+						<img id="RightButton" src="Arrow_Right.png" style="float:center; width:80%; height:80%; margin:10%" onclick="RightButtonClick()"/>
+					</div>
+				</div>
+			</div>
+			<div style="float:left; width:33%; height:100%">
+				<div style="float:top; height:20%;">
+					<div style="float:left; width:20%; height:100%;">
+					</div>
+					<div style="float:left; width:30%; height:100%; background-color:white;">
+						<img src="Cannon.png" style="float:center; width:80%; height:80%; margin:10%"/>
+					</div>
+					<div style="float:left; width:30%; height:100%;">
+						<label id="GunTokensAmountLabel" style="font-size:72;">x8</label>
+					</div>
+					<div style="float:left; width:20%; height:100%;">
+					</div>
+				</div>
+				<div style="float:top; height:80%;">
+					<img src="Frame.png" style="float:center; width:98%; height:98%; margin:1%;" onclick="ReadyButtonClick()"/>
+				</div>
+			</div>
+			<div style="float:left; width:33%; height:100%;">
+				<div style="float:left; width:33%; height:100%;">
+					<div style="float:top; height:25%;">
+						<img id="FirstMoveGunLeftButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FirstMoveGunLeftButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="SecondMoveGunLeftButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="SecondMoveGunLeftButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="ThirdMoveGunLeftButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="ThirdMoveGunLeftButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="FourthMoveGunLeftButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FourthMoveGunLeftButtonClick()"/>
+					</div>
+				</div>
+				<div style="float:left; width:34%; height:100%;">
+					<div style="float:top; height:25%;">
+						<img id="FirstMoveButton" src="Frame.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FirstMoveButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="SecondMoveButton" src="Frame.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="SecondMoveButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="ThirdMoveButton" src="Frame.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="ThirdMoveButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="FourthMoveButton" src="Frame.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FourthMoveButtonClick()"/>
+					</div>
+				</div>
+				<div style="float:right; width:33%; height:100%;">
+					<div style="float:top; height:25%;">
+						<img id="FirstMoveGunRightButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FirstMoveGunRightButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="SecondMoveGunRightButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="SecondMoveGunRightButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="ThirdMoveGunRightButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="ThirdMoveGunRightButtonClick()"/>
+					</div>
+					<div style="float:top; height:25%;">
+						<img id="FourthMoveGunRightButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FourthMoveGunRightButtonClick()"/>
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+</html>
