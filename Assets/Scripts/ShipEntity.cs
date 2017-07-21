@@ -20,7 +20,7 @@ namespace Ocean
             }
         }
 
-        public override void fu_processNextStage()
+        public override void fu_processNextStage(EGameStage _newStage)
         {
 
         }
