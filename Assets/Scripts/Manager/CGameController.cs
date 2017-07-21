@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using plib.Util;
+using Ocean;
 
 public class CGameController : SingletonBehaviour<CGameController>
 {

@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using plib.Util;
+using Ocean;
 
 public class COceanData
 {
-    private List<COceanEntity> mi_entityList;
+    private List<AOceanEntity> mi_entityList;
 
-    public List<COceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
+    public List<AOceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
     {
-        List<COceanEntity> list = new List<COceanEntity>();
+        List<AOceanEntity> list = new List<AOceanEntity>();
         foreach(var e in mi_entityList)
         {
             if (e.EntityType == _entityType)
@@ -28,15 +29,21 @@ public class COceanData
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         for (int i = 0; i < _numRocks; i++)
         {
+            int x;
+            int y;
             do
             {
+                x = UnityEngine.Random.Range(0, 100);
+                y = UnityEngine.Random.Range(0, 100);
+            } while (fu_IsPlaceOccupied(x, y));
 
-            }
+            AOceanEntity entity = new CRockEntity(x, y, EOrientation.North);
+            mi_entityList.Add(entity);
         }
 
     }
 
-    public bool fu_IsPlaceOccupied(EOceanEntityType _type)
+    public bool fu_IsPlaceOccupied(int _x, int _y)
     {
         return false;
     }
