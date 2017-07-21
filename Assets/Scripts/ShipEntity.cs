@@ -12,7 +12,7 @@ namespace Ocean
         {
         }
 
-        public override EOceanEntityType EntityType
+        public override EOceanEntityType pu_EntityType
         {
             get
             {

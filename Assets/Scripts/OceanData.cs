@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using plib.Util;
+using System.Linq;
 
 namespace Ocean
 {
@@ -29,16 +30,6 @@ namespace Ocean
         public List<AOceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
         {
             return mi_entityList.Where(_o => _o.pu_EntityType == _entityType).ToList();
-            //List<AOceanEntity> list = new List<AOceanEntity>();
-            //foreach (var e in mi_entityList)
-            //{
-            //    if (e.EntityType == _entityType)
-            //    {
-            //        list.Add(e);
-            //    }
-            //}
-            //
-            //return list;
         }
 
         public List<AOceanEntityView> fu_GetViewsOfType(EOceanEntityType _entityType)
@@ -50,23 +41,23 @@ namespace Ocean
         {
             // first, distribute some rocks
             UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+            AOceanEntity entity = null;
             for (int i = 0; i < _numRocks; i++)
             {
-            int x;
-            int y;
+                int x;
+                int y;
                 do
                 {
-                x = UnityEngine.Random.Range(0, 100);
-                y = UnityEngine.Random.Range(0, 100);
-            } while (fu_IsPlaceOccupied(x, y));
+                    x = UnityEngine.Random.Range(0, 100);
+                    y = UnityEngine.Random.Range(0, 100);
+                } while (fu_IsPlaceOccupied(x, y));
+            } 
 
-                } while (true);
             mi_entityList.Add(entity);
-            }   
-
         }
 
-        public bool fu_IsPlaceOccupied(EOceanEntityType _type)
+
+        public bool fu_IsPlaceOccupied(int _x, int _y)
         {
             return false;
         }
