@@ -247,7 +247,6 @@
     <Compile Include="Assets\AirConsole\scripts\DebugLevel.cs" />
     <Compile Include="Assets\AirConsole\scripts\Settings.cs" />
     <Compile Include="Assets\AirConsole\scripts\WebsocketListener.cs" />
-    <Compile Include="Assets\GameJam\Scripts\GameJamLogic.cs" />
     <Compile Include="Assets\Scripts\AOceanEntityView.cs" />
     <Compile Include="Assets\Scripts\CRockEntityView.cs" />
     <Compile Include="Assets\Scripts\CShipEntityView.cs" />
