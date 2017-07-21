@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Ocean
 {
     public enum EOceanEntityType {  Water, Rock, Ship, Storm, SwirlCClock, SwirlClock, SwirlCenter, Stream }
-    public enum EOrientation { North = 0, East = 1, South = 2, West = 3 }
+    public enum EOrientation { North = 0, East = 1, South = 2, West = 3, MAX_ORIENTATION }
 
     public abstract class AOceanEntity
     {
