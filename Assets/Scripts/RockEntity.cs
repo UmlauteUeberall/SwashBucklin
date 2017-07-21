@@ -7,7 +7,7 @@ namespace Ocean
 {
     public class CRockEntity : AOceanEntity
     {
-        public override EOceanEntityType EntityType
+        public override EOceanEntityType pu_EntityType
         {
             get
             {

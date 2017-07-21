@@ -18,8 +18,8 @@ namespace Ocean
             pu_y = _y;
         }
 
-        public abstract EOceanEntityType EntityType { get; }
-        public int OwnerId { get; set; }
+        public abstract EOceanEntityType pu_EntityType { get; }
+        public int pu_OwnerId { get; set; }
 
 		public virtual void fu_processNextStage()
 	    {
