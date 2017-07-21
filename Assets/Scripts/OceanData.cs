@@ -26,7 +26,13 @@ public class COceanData
     {
         // first, distribute some rocks
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+        for (int i = 0; i < _numRocks; i++)
+        {
+            do
+            {
 
+            }
+        }
 
     }
 
