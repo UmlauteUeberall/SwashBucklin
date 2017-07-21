@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 
-public class ExamplePongLogic : MonoBehaviour
-{
+public class ExamplePongLogic : MonoBehaviour {
+
 	public Rigidbody2D racketLeft;
 	public Rigidbody2D racketRight;
 	public Rigidbody2D ball;
@@ -16,8 +16,7 @@ public class ExamplePongLogic : MonoBehaviour
 	private int scoreRacketLeft = 0;
 	private int scoreRacketRight = 0;
 
-	void Awake ()
-    {
+	void Awake () {
 		AirConsole.instance.onMessage += OnMessage;
 		AirConsole.instance.onConnect += OnConnect;
 		AirConsole.instance.onDisconnect += OnDisconnect;
