@@ -19,6 +19,9 @@ namespace Ocean
             }
         }
 
+        public CRockEntity(int _x, int _y) 
+            : base(_x, _y)
+        { }
         public override void fu_processNextStage()
         {
 

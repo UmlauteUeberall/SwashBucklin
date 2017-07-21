@@ -5,46 +5,51 @@ using UnityEngine;
 using plib.Util;
 using Ocean;
 
-public class COceanData
+namespace Ocean
 {
-    private List<AOceanEntity> mi_entityList;
 
-    public List<AOceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
+    public class COceanData
     {
-        List<AOceanEntity> list = new List<AOceanEntity>();
-        foreach(var e in mi_entityList)
+        private List<AOceanEntity> mi_entityList;
+
+        public List<AOceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
         {
-            if (e.EntityType == _entityType)
+            List<AOceanEntity> list = new List<AOceanEntity>();
+            foreach (var e in mi_entityList)
             {
-                list.Add(e);
+                if (e.EntityType == _entityType)
+                {
+                    list.Add(e);
+                }
             }
+
+            return list;
         }
 
-        return list;
-    }
-
-    public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numDrifts)
-    {
-        // first, distribute some rocks
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        for (int i = 0; i < _numRocks; i++)
+        public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numDrifts)
         {
+            // first, distribute some rocks
+            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+            for (int i = 0; i < _numRocks; i++)
+            {
             int x;
             int y;
-            do
-            {
+                do
+                {
                 x = UnityEngine.Random.Range(0, 100);
                 y = UnityEngine.Random.Range(0, 100);
             } while (fu_IsPlaceOccupied(x, y));
 
-            AOceanEntity entity = new CRockEntity(x, y, EOrientation.North);
+                } while (true);
             mi_entityList.Add(entity);
+            }   
+
         }
 
+        public bool fu_IsPlaceOccupied(EOceanEntityType _type)
+        {
+            return false;
+        }
     }
 
-    public bool fu_IsPlaceOccupied(int _x, int _y)
-    {
-        return false;
-    }
 }

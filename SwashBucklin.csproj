@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Manager\CGameController.cs" />
     <Compile Include="Assets\Scripts\OceanData.cs" />
     <Compile Include="Assets\Scripts\OceanEntity.cs" />
+    <Compile Include="Assets\Scripts\RockEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ChessField.shader" />
