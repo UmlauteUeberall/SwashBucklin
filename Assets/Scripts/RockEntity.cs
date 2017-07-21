@@ -14,5 +14,9 @@ namespace Ocean
                 return EOceanEntityType.Rock;
             }
         }
+
+        public CRockEntity(int _x, int _y) 
+            : base(_x, _y)
+        { }
     }
 }

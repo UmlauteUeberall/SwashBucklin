@@ -4,40 +4,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using plib.Util;
 
-public class COceanData
+namespace Ocean
 {
-    private List<COceanEntity> mi_entityList;
 
-    public List<COceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
+    public class COceanData
     {
-        List<COceanEntity> list = new List<COceanEntity>();
-        foreach(var e in mi_entityList)
+        private List<AOceanEntity> mi_entityList;
+
+        public List<AOceanEntity> fu_GetListOfType(EOceanEntityType _entityType)
         {
-            if (e.EntityType == _entityType)
+            List<AOceanEntity> list = new List<AOceanEntity>();
+            foreach (var e in mi_entityList)
             {
-                list.Add(e);
+                if (e.EntityType == _entityType)
+                {
+                    list.Add(e);
+                }
             }
+
+            return list;
         }
 
-        return list;
-    }
-
-    public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numDrifts)
-    {
-        // first, distribute some rocks
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        for (int i = 0; i < _numRocks; i++)
+        public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numDrifts)
         {
-            do
+            // first, distribute some rocks
+            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+            for (int i = 0; i < _numRocks; i++)
             {
+                do
+                {
 
-            }
+                } while (true);
+            }   
+
         }
 
+        public bool fu_IsPlaceOccupied(EOceanEntityType _type)
+        {
+            return false;
+        }
     }
 
-    public bool fu_IsPlaceOccupied(EOceanEntityType _type)
-    {
-        return false;
-    }
 }
