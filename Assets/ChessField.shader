@@ -33,8 +33,8 @@
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 			float2 wp = IN.worldPos.xz + float2(1000,1000);
-			wp += float2(0.5f, 0.5f);
-			wp = float2(fmod(wp.x,1.0f), fmod(wp.y, 1.0f));
+			//wp += float2(0.5f, 0.5f);
+			wp = float2(fmod(wp.x,20.0f), fmod(wp.y, 20.0f));
 			//wp = float2(0.5f, 0.5f) - wp;
 			wp = float2(abs(wp.x), abs(wp.y));
 			if (wp.x < 0.1 || wp.y < 0.1)
