@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Ocean
 {
-    public enum EOceanEntityType {  Empty, Rock, Ship, Storm }
+    public enum EOceanEntityType {  Water, Rock, Ship, Storm, SwirlCClock, SwirlClock, SwirlCenter, Stream }
+    public enum EOrientation { North = 0, East = 1, South = 2, West = 3 }
 
     public abstract class AOceanEntity
     {
@@ -12,7 +13,7 @@ namespace Ocean
         public int pu_x;
         public int pu_y;
 
-        public AOceanEntity(int _x, int _y)
+        public AOceanEntity(int _x, int _y, EOrientation _orientation)
         {
             pu_x = _x;
             pu_y = _y;

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using plib.Util;
-using System.Linq;
 
 namespace Ocean
 {
@@ -53,10 +52,16 @@ namespace Ocean
             UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
             for (int i = 0; i < _numRocks; i++)
             {
+            int x;
+            int y;
                 do
                 {
+                x = UnityEngine.Random.Range(0, 100);
+                y = UnityEngine.Random.Range(0, 100);
+            } while (fu_IsPlaceOccupied(x, y));
 
                 } while (true);
+            mi_entityList.Add(entity);
             }   
 
         }
