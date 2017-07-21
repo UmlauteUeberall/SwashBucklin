@@ -1,0 +1,117 @@
+Prefixes
+Overview
+
+[mefp][iou]_VariableName
+[CIEAD]ClassName
+Klassen/Typen
+
+    C - C lass
+    I - I nterface
+    E - E num
+    A - A bstrakte Klasse
+    D - D elegate
+
+Member und Funktionen
+
+    m - Feld/ M ember
+    e - E vent
+    f - F unktion
+    p - P roperty
+
+AccessModifier
+
+    i - Pr i vate
+    o - Pr o tected
+    u - P u blic
+
+Examples
+
+private bool mi_IsAlive;
+protected bool mo_IsAlive;
+public bool mu_IsAlive;
+
+private event DIsAlive ei_IsAlive;
+protected event DIsAlive eo_IsAlive;
+public event DIsAlive eu_IsAlive;
+
+private bool fi_IsAlive()
+{
+
+}
+
+protected bool fo_IsAlive()
+{
+
+}
+
+public bool fu_IsAlive()
+{
+
+}
+
+private bool pi_IsAlive     { get; set; }
+protected bool po_IsAlive   { get; set; }
+public bool pu_IsAlive      { get; set; }
+
+public class CIsAlive
+{
+
+}
+
+public interface IIsAlive
+{
+
+}
+
+public abstract class AIsAlive
+{
+
+}
+
+public struct SIsAlive
+{
+
+}
+
+public delegate bool DIsAlive;
+
+public enum EHumanType
+{
+   DEFAULT = 0,
+   NONE = -1,
+   THE_OTHERS = 1
+}
+
+public bool fu_IsAlive(CIsAlive _isAlive)
+{
+    CHumanCosmos.mu_TicksTillArmageddon;
+}
+
+public static class CHumanCosmos : CCosmos
+{
+    public const long YEARS_TO_LIVE = 85;
+    public readonly long mu_yearsToLive = 85;
+    public static long mu_TicksTillArmageddon;
+}
+
+public class CHuman : ACosmicEntity
+{
+    public override long pu_Age 
+    {
+        get { return mi_age; }
+    }
+    private long mi_age;
+}
+
+public bool fu_IsAlive(CHuman _human) 
+{
+    var hurp = 5;
+    return _human.Age <= CHumanCosmos.YEARS_TO_LIVE;
+}
+
+public void fu_RunCosmos()
+{
+    mi_CosmicEntities.ForEach(_o => _o.fu_UpdateCosmos().ForEach(_n => _n.fu_UpdateSubSystem()));
+    mi_Prefab.mu_Transform.mu_Parent.fu_Rotate(mi_OtherPrefab.mu_Transform.mu_Position)
+}
+
