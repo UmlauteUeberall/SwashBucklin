@@ -27,6 +27,13 @@ public class CGameController : SingletonBehaviour<CGameController>
         UnityHelper.LoadUnityLogger();
     }
 
+    private void Start()
+    {
+        mu_ocean = new COceanData();
+        mu_ocean.fu_CreateOcean(2, 20, 4, 8);
+        fu_CreateViews();
+    }
+
     public void fu_CreateViews()
     {
         List<AOceanEntity> ets = mu_ocean.fu_GetAllEntities();
@@ -63,7 +70,8 @@ public class CGameController : SingletonBehaviour<CGameController>
             }
 
             pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
-            tmp = Instantiate(prefab, pos, Quaternion.identity, mu_OceanPlane.transform);       // TODO: Rotation
+            tmp = Instantiate(prefab, pos, Quaternion.identity);       // TODO: Rotation
+            tmp.transform.parent = mu_OceanPlane.transform;
 
             e.mu_view = tmp.GetComponent<AOceanEntityView>();
         }

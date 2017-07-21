@@ -15,7 +15,7 @@ namespace Ocean
 
         public float mu_cellSize = 20.0f;
 
-        private List<AOceanEntity> mi_entityList;
+        private List<AOceanEntity> mi_entityList = new List<AOceanEntity>();
 
         public List<AOceanEntity> fu_GetAllEntities()
         {
@@ -32,12 +32,17 @@ namespace Ocean
             return mi_entityList.Where(_o => _o.pu_EntityType == _entityType).ToList();
         }
 
+        public List<AOceanEntity> fu_GetListAt(int _x, int _y)
+        {
+            return mi_entityList.Where(_o => _o.pu_x  ==_x && _o.pu_y == _y).ToList();
+        }
+
         public List<AOceanEntityView> fu_GetViewsOfType(EOceanEntityType _entityType)
         {
             return mi_entityList.Where(_o => _o.pu_EntityType == _entityType).Select(_o => _o.mu_view).ToList();
         }
 
-        public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numDrifts)
+        public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numStreams)
         {
             // first, distribute some rocks
             UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
@@ -50,8 +55,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, 100);
-                    y = UnityEngine.Random.Range(0, 100);
+                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
                 entity = new CRockEntity(x, y, EOrientation.North);
                 mi_entityList.Add(entity);
@@ -62,8 +67,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, 100);
-                    y = UnityEngine.Random.Range(0, 100);
+                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
 
                 EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);
@@ -77,8 +82,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, 100);
-                    y = UnityEngine.Random.Range(0, 100);
+                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
                 } while (fi_IsPlaceOccupiedForSwirl(x, y));
 
                 // top row
@@ -105,8 +110,19 @@ namespace Ocean
                 mi_entityList.Add(entity);
             }
 
-            // make 
+            // make streams
+            for (int i = 0; i < _numStreams; i++)
+            {
+                do
+                {
+                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
+                } while (fu_IsPlaceOccupied(x, y));
 
+                EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);
+                entity = new CRockEntity(x, y, or);
+                mi_entityList.Add(entity);
+            }
         }
 
         public bool fu_IsPlaceOccupied(int _x, int _y)
