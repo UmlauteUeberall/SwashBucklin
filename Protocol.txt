@@ -1,0 +1,27 @@
+Server -> Client
+
+Mode:
+0 = Empty
+1 = ArrowUp
+2 = ArrowLeft
+3 = ArrowRight
+
+ModeSide:
+0 = Empty
+1 = Gun
+2 = Hook
+
+Update
+<DeviceID>|<IsReady>|<HealthAmount>|<TokenGunAmount>|<TokenHookAmount>|<TokenStraightAmount>|<TokenLeftAmount>|<TokenRightAmount>|<Movement1Mode>|<Movement1LeftMode>|<Movement1RightMode>|<Movement2Mode>|<Movement2LeftMode>|<Movement2RightMode>|<Movement3Mode>|<Movement3LeftMode>|<Movement3RightMode>|<Movement4Mode>|<Movement4LeftMode>|<Movement4RightMode>
+
+Client -> Server
+<CommandNr>|<Slot>|<Side>
+Beispiel:
+
+CommandNr	|Slot	|Side
+0 = ArrowUp	|0 - 3	|n
+1 = ArrowLeft	|0 - 3	|n
+2 = ArrowRight	|0 - 3	|n
+3 = Fire	|0 - 3	|0 = Left or 1 = Right
+4 = Hook	|0 - 3	|0 = Left or 1 = Right
+5 = Ready	|n	|n
