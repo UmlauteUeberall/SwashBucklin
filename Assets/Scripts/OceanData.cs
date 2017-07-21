@@ -28,7 +28,6 @@ public class COceanData
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
 
 
-
     }
 
     public bool fu_IsPlaceOccupied(EOceanEntityType _type)
