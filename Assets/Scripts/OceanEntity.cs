@@ -22,7 +22,7 @@ namespace Ocean
         public abstract EOceanEntityType pu_EntityType { get; }
         public int pu_OwnerId { get; set; }
 
-		public virtual void fu_processNextStage()
+		public virtual void fu_processNextStage(EGameStage _newStage)
 	    {
 
     	}

@@ -9,6 +9,12 @@ public class CGameController : SingletonBehaviour<CGameController>
     public GameObject mu_OceanPlane;
     public COceanData mu_ocean;
 
+    public CRockEntityView mu_RockPrefab;
+    public CShipEntityView mu_ShipPrefab;
+    public CSwirlEntityView mu_SwirlPrefab;
+    public CStormEntityView mu_StormPrefab;
+    public CStreamEntityView mu_SteamPrefab;
+
     public int pu_Round { get { return mi_round; } }
     public EGameStage pu_GameStage { get { return mi_gameStage; } }
 
@@ -33,13 +39,19 @@ public class CGameController : SingletonBehaviour<CGameController>
             switch (e.pu_EntityType)
             {
                 case EOceanEntityType.Rock:
-                    prefab = null;          // Todo: Models anlegen
+                    prefab = mu_RockPrefab.gameObject;
                     break;
                 case EOceanEntityType.Ship:
-                    prefab = null;
+                    prefab = mu_ShipPrefab.gameObject;
                     break;
                 case EOceanEntityType.Storm:
-                    prefab = null;
+                    prefab = mu_StormPrefab.gameObject;
+                    break;
+                case EOceanEntityType.SwirlCenter:
+                    prefab = mu_SwirlPrefab.gameObject;
+                    break;
+                case EOceanEntityType.Stream:
+                    prefab = mu_SteamPrefab.gameObject;
                     break;
                 default:
                     break;
@@ -69,8 +81,14 @@ public class CGameController : SingletonBehaviour<CGameController>
 
         mi_gameStage = (EGameStage) gs;
 
-        mu_ocean.fu_GetListOfType(EOceanEntityType.Ship).ForEach(_o => _o.fu_processNextStage());
-        // TODO: Bewegliche Stürme
+        var ets = mu_ocean.fu_GetAllEntities();
+        foreach (AOceanEntity e in ets)
+        {
+            if (e.pu_EntityType == EOceanEntityType.Ship || e.pu_EntityType == EOceanEntityType.Storm)
+            {
+                e.fu_processNextStage(mi_gameStage);
+            }
+        }
     }
 }
 
