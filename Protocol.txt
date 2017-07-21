@@ -11,17 +11,31 @@ ModeSide:
 1 = Gun
 2 = Hook
 
+GameState:
+0 = MovementPlanning
+1 = Action
+2 = Lobby
+3 = Highscore
+
 Update
-<DeviceID>|<IsReady>|<HealthAmount>|<TokenGunAmount>|<TokenHookAmount>|<TokenStraightAmount>|<TokenLeftAmount>|<TokenRightAmount>|<Movement1Mode>|<Movement1LeftMode>|<Movement1RightMode>|<Movement2Mode>|<Movement2LeftMode>|<Movement2RightMode>|<Movement3Mode>|<Movement3LeftMode>|<Movement3RightMode>|<Movement4Mode>|<Movement4LeftMode>|<Movement4RightMode>
+<IsReady>|<HealthAmount>|<TokenGunAmount>|<TokenHookAmount>|<TokenStraightAmount>|<TokenLeftAmount>|<TokenRightAmount>|<Movement1Mode>|<Movement1LeftMode>|<Movement1RightMode>|<Movement2Mode>|<Movement2LeftMode>|<Movement2RightMode>|<Movement3Mode>|<Movement3LeftMode>|<Movement3RightMode>|<Movement4Mode>|<Movement4LeftMode>|<Movement4RightMode>|<GameState>
 
 Client -> Server
-<CommandNr>|<Slot>|<Side>
-Beispiel:
 
-CommandNr	|Slot	|Side
-0 = ArrowUp	|0 - 3	|n
-1 = ArrowLeft	|0 - 3	|n
-2 = ArrowRight	|0 - 3	|n
-3 = Fire	|0 - 3	|0 = Left or 1 = Right
-4 = Hook	|0 - 3	|0 = Left or 1 = Right
-5 = Ready	|n	|n
+<CommandNr>|<Mode>/<ModeSide>
+Beispiel:
+0|2
+
+0 = Ready | n
+1 = Movement1 | 0 - 3
+2 = Movement1GunLeft | 0 - 2
+3 = Movement1GunRight | 0 - 2
+4 = Movement2 | 0 - 3
+5 = Movement2GunLeft | 0 - 2
+6 = Movement2GunRight | 0 - 2
+7 = Movement3 | 0 - 3
+8 = Movement3GunLeft | 0 - 2
+9 = Movement3GunRight | 0 - 2
+10 = Movement4 | 0 - 3
+11 = Movement4GunLeft | 0 - 2
+12 = Movement4GunRight | 0 - 2
