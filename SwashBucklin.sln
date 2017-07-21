@@ -2,8 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 <<<<<<< HEAD
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwashBucklin", "SwashBucklin.csproj", "{B59EC1AB-3B43-FB29-DFAD-F69123EED5D2}"
 EndProject
+=======
+>>>>>>> b6f76cb835616ada782662e3a2804c906e983ff7
 =======
 >>>>>>> b6f76cb835616ada782662e3a2804c906e983ff7
 Global
@@ -13,10 +16,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{B59EC1AB-3B43-FB29-DFAD-F69123EED5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B59EC1AB-3B43-FB29-DFAD-F69123EED5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B59EC1AB-3B43-FB29-DFAD-F69123EED5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B59EC1AB-3B43-FB29-DFAD-F69123EED5D2}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+>>>>>>> b6f76cb835616ada782662e3a2804c906e983ff7
 =======
 >>>>>>> b6f76cb835616ada782662e3a2804c906e983ff7
 	EndGlobalSection

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 5.5.2f1:3.1.0.0
 StandaloneWindows
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
@@ -9,6 +10,10 @@ C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEng
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll
+=======
+5.5.2f1:2.8.2.0
+StandaloneWindows
+>>>>>>> b6f76cb835616ada782662e3a2804c906e983ff7
 =======
 5.5.2f1:2.8.2.0
 StandaloneWindows
