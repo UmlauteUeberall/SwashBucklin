@@ -5,6 +5,30 @@
             navigator.vibrate = (navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate);
 
             var airconsole;
+			
+			var localIsReady = 0;
+			var localHealthAmount = 0;
+			var localTokenGunAmount = 0;
+			var localTokenHookAmount = 0;
+			var localTokenStraightAmount = 0;
+			var localTokenLeftAmount = 0;
+			var localTokenRightAmount = 0;
+			var localMovement1Mode = 0;
+			var localMovement1LeftMode = 0;
+			var localMovement1RightMode = 0;
+			var localMovement2Mode = 0;
+			var localMovement2LeftMode = 0;
+			var localMovement2RightMode = 0;
+			var localMovement3Mode = 0;
+			var localMovement3LeftMode = 0;
+			var localMovement3RightMode = 0;
+			var localMovement4Mode = 0;
+			var localMovement4LeftMode = 0;
+			var localMovement4RightMode = 0;
+			var localGameState = 0;
+			
+			<!-- 0 = Null; 1 = Straight; 2 = Left; 3 = Right -->
+			var selectedMovementMode = 0;
 
             function init()
             {
@@ -23,119 +47,542 @@
                 {
                     HandleGameReady();
                 }
+				
+				UpdateUI();
             }
+
+			function UpdateUI()
+			{
+				if (localGameState == 1)
+				{
+					<!-- Action-Phase -->
+				}
+				else if (localGameState == 2)
+				{
+					<!-- Lobby-Phase -->
+				}
+				else if (localGameState == 3)
+				{
+					<!-- Highscore-Phase -->
+				}
+				else
+				{
+					<!-- Movement Planning-Phase -->
+				
+					<!-- Ready Button -->
+					if (localIsReady <= 0)
+					{
+						document.getElementById('ReadyButton').src = "Frame_Ready.png";
+					}
+					else
+					{
+						document.getElementById('ReadyButton').src = "Frame_Ready_Ready.png";
+					}
+					
+					<!-- Health Display -->
+					if (localHealthAmount <= 0)
+					{
+						document.getElementById('Health1').src = "Heart_Empty.png";
+						document.getElementById('Health2').src = "Heart_Empty.png";
+						document.getElementById('Health3').src = "Heart_Empty.png";
+						document.getElementById('Health4').src = "Heart_Empty.png";
+					}
+					else if (localHealthAmount == 1)
+					{
+						document.getElementById('Health1').src = "Heart_Full.png";
+						document.getElementById('Health2').src = "Heart_Empty.png";
+						document.getElementById('Health3').src = "Heart_Empty.png";
+						document.getElementById('Health4').src = "Heart_Empty.png";
+					}
+					else if (localHealthAmount == 2)
+					{
+						document.getElementById('Health1').src = "Heart_Full.png";
+						document.getElementById('Health2').src = "Heart_Full.png";
+						document.getElementById('Health3').src = "Heart_Empty.png";
+						document.getElementById('Health4').src = "Heart_Empty.png";
+					}
+					else if (localHealthAmount == 3)
+					{
+						document.getElementById('Health1').src = "Heart_Full.png";
+						document.getElementById('Health2').src = "Heart_Full.png";
+						document.getElementById('Health3').src = "Heart_Full.png";
+						document.getElementById('Health4').src = "Heart_Empty.png";
+					}
+					else
+					{
+						document.getElementById('Health1').src = "Heart_Full.png";
+						document.getElementById('Health2').src = "Heart_Full.png";
+						document.getElementById('Health3').src = "Heart_Full.png";
+						document.getElementById('Health4').src = "Heart_Full.png";
+					}
+					
+					<!-- Gun Tokens Display -->
+					document.getElementById('GunTokensAmountLabel').innerHTML = "x" + localTokenGunAmount;
+					
+					<!-- Hook Tokens Display -->
+					document.getElementById('HookTokensAmountLabel').innerHTML = "x" + localTokenHookAmount;
+					
+					<!-- Straight Tokens Display -->
+					document.getElementById('StraightTokensAmountLabel').innerHTML = "x" + localTokenStraightAmount;
+					
+					<!-- Left Tokens Display -->
+					document.getElementById('LeftTokensAmountLabel').innerHTML = "x" + localTokenLeftAmount;
+					
+					<!-- Right Tokens Display -->
+					document.getElementById('RightTokensAmountLabel').innerHTML = "x" + localTokenRightAmount;
+					
+					<!-- First Move Gun Left Display -->
+					if (localMovement1LeftMode == 1)
+					{
+						document.getElementById('FirstMoveGunLeftButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement1LeftMode == 2)
+					{
+						document.getElementById('FirstMoveGunLeftButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('FirstMoveGunLeftButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- First Move Gun Right Display -->
+					if (localMovement1RightMode == 1)
+					{
+						document.getElementById('FirstMoveGunRightButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement1RightMode == 2)
+					{
+						document.getElementById('FirstMoveGunRightButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('FirstMoveGunRightButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- First Move Display -->
+					if (localMovement1Mode == 1)
+					{
+						document.getElementById('FirstMoveButton').src = "Frame_Straight.png";
+					}
+					else if (localMovement1Mode == 2)
+					{
+						document.getElementById('FirstMoveButton').src = "Frame_Left.png";
+					}
+					else if (localMovement1Mode == 3)
+					{
+						document.getElementById('FirstMoveButton').src = "Frame_Right.png";
+					}
+					else
+					{
+						document.getElementById('FirstMoveButton').src = "Frame.png";
+					}
+					
+					<!-- Second Move Gun Left Display -->
+					if (localMovement2LeftMode == 1)
+					{
+						document.getElementById('SecondMoveGunLeftButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement2LeftMode == 2)
+					{
+						document.getElementById('SecondMoveGunLeftButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('SecondMoveGunLeftButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Second Move Gun Right Display -->
+					if (localMovement2RightMode == 1)
+					{
+						document.getElementById('SecondMoveGunRightButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement2RightMode == 2)
+					{
+						document.getElementById('SecondMoveGunRightButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('SecondMoveGunRightButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Second Move Display -->
+					if (localMovement2Mode == 1)
+					{
+						document.getElementById('SecondMoveButton').src = "Frame_Straight.png";
+					}
+					else if (localMovement2Mode == 2)
+					{
+						document.getElementById('SecondMoveButton').src = "Frame_Left.png";
+					}
+					else if (localMovement2Mode == 3)
+					{
+						document.getElementById('SecondMoveButton').src = "Frame_Right.png";
+					}
+					else
+					{
+						document.getElementById('SecondMoveButton').src = "Frame.png";
+					}
+					
+					<!-- Third Move Gun Left Display -->
+					if (localMovement3LeftMode == 1)
+					{
+						document.getElementById('ThirdMoveGunLeftButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement3LeftMode == 2)
+					{
+						document.getElementById('ThirdMoveGunLeftButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('ThirdMoveGunLeftButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Third Move Gun Right Display -->
+					if (localMovement3RightMode == 1)
+					{
+						document.getElementById('ThirdMoveGunRightButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement3RightMode == 2)
+					{
+						document.getElementById('ThirdMoveGunRightButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('ThirdMoveGunRightButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Third Move Display -->
+					if (localMovement3Mode == 1)
+					{
+						document.getElementById('ThirdMoveButton').src = "Frame_Straight.png";
+					}
+					else if (localMovement3Mode == 2)
+					{
+						document.getElementById('ThirdMoveButton').src = "Frame_Left.png";
+					}
+					else if (localMovement3Mode == 3)
+					{
+						document.getElementById('ThirdMoveButton').src = "Frame_Right.png";
+					}
+					else
+					{
+						document.getElementById('ThirdMoveButton').src = "Frame.png";
+					}
+					
+					<!-- Fourth Move Gun Left Display -->
+					if (localMovement4LeftMode == 1)
+					{
+						document.getElementById('FourthMoveGunLeftButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement4LeftMode == 2)
+					{
+						document.getElementById('FourthMoveGunLeftButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('FourthMoveGunLeftButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Fourth Move Gun Right Display -->
+					if (localMovement4RightMode == 1)
+					{
+						document.getElementById('FourthMoveGunRightButton').src = "Circle_Grappling_Hook.png";
+					}
+					else if (localMovement4RightMode == 2)
+					{
+						document.getElementById('FourthMoveGunRightButton').src = "Circle_Cannon.png";
+					}
+					else
+					{
+						document.getElementById('FourthMoveGunRightButton').src = "Circle_Outer.png";
+					}
+					
+					<!-- Fourth Move Display -->
+					if (localMovement4Mode == 1)
+					{
+						document.getElementById('FourthMoveButton').src = "Frame_Straight.png";
+					}
+					else if (localMovement4Mode == 2)
+					{
+						document.getElementById('FourthMoveButton').src = "Frame_Left.png";
+					}
+					else if (localMovement4Mode == 3)
+					{
+						document.getElementById('FourthMoveButton').src = "Frame_Right.png";
+					}
+					else
+					{
+						document.getElementById('FourthMoveButton').src = "Frame.png";
+					}
+					
+					<!-- Movement Selection -->
+					if (selectedMovementMode == 1)
+					{
+						document.getElementById('UpButton').src = "Frame_Straight_Selected.png";
+						document.getElementById('LeftButton').src = "Frame_Left.png";
+						document.getElementById('RightButton').src = "Frame_Right.png";
+					}
+					else if (selectedMovementMode == 2)
+					{
+						document.getElementById('UpButton').src = "Frame_Straight.png";
+						document.getElementById('LeftButton').src = "Frame_Left_Selected.png";
+						document.getElementById('RightButton').src = "Frame_Right.png";
+					}
+					else if (selectedMovementMode == 3)
+					{
+						document.getElementById('UpButton').src = "Frame_Straight.png";
+						document.getElementById('LeftButton').src = "Frame_Left.png";
+						document.getElementById('RightButton').src = "Frame_Right_Selected.png";
+					}
+					else
+					{
+						document.getElementById('UpButton').src = "Frame_Straight.png";
+						document.getElementById('LeftButton').src = "Frame_Left.png";
+						document.getElementById('RightButton').src = "Frame_Right.png";
+					}
+				}
+			}
 			
 			function HandleAirconsoleMessage(from, data)
 			{
-				if (from == AirConsole.SCREEN && data.vibrate)
+				if (from == AirConsole.SCREEN)
 				{
-					navigator.vibrate(data.vibrate);
-					console.log("Vibrating: " + data.vibrate);
+					if(data.vibrate)
+					{
+						navigator.vibrate(data.vibrate);
+						console.log("Vibrating: " + data.vibrate);
+						alert(data);
+					}
+					else
+					{
+						<!-- Hopefully our string! If not... we´re d00med!!! -->
+						var arr = data.split('|');
+						localIsReady 				= arr[0];
+						localHealthAmount 			= arr[1];
+						localTokenGunAmount 		= arr[2];
+						localTokenHookAmount 		= arr[3];
+						localTokenStraightAmount 	= arr[4];
+						localTokenLeftAmount 		= arr[5];
+						localTokenRightAmount 		= arr[6];
+						localMovement1Mode 			= arr[7];
+						localMovement1LeftMode 		= arr[8];
+						localMovement1RightMode 	= arr[9];
+						localMovement2Mode 			= arr[10];
+						localMovement2LeftMode 		= arr[11];
+						localMovement2RightMode 	= arr[12];
+						localMovement3Mode 			= arr[13];
+						localMovement3LeftMode 		= arr[14];
+						localMovement3RightMode 	= arr[15];
+						localMovement4Mode 			= arr[16];
+						localMovement4LeftMode 		= arr[17];
+						localMovement4RightMode 	= arr[18];
+						
+						UpdateUI();
+					}
 				}
 			}
 			
 			function HandleActivePlayersChange(player_number)
 			{
-				
 			}
 			
 			function HandleGameReady()
 			{
 			}
 			
-			function updateUI(HealthLeft, Token_Gun, Token_Straight, Token_Left, Token_Right, Token_Hook)
-			{
-				
-			}
-
-            function move(amount)
-            {
-                airconsole.message(AirConsole.SCREEN, { move: amount })
-            }
-			
 			function UpButtonClick()
 			{
-				alert("Up Button!");
+				if(selectedMovementMode == 1)
+				{
+					selectedMovementMode = 0;
+				}
+				else
+				{
+					selectedMovementMode = 1;
+				}
+				
+				UpdateUI();
 			}
 			
 			function LeftButtonClick()
 			{
-				alert("Left Button!");
+				if(selectedMovementMode == 2)
+				{
+					selectedMovementMode = 0;
+				}
+				else
+				{
+					selectedMovementMode = 2;
+				}
+				
+				UpdateUI();
 			}
 			
 			function RightButtonClick()
 			{
-				alert("Right Button!");
-			}
-			
-			function HookButtonClick()
-			{
-				alert("Hook Button!");
+				if(selectedMovementMode == 3)
+				{
+					selectedMovementMode = 0;
+				}
+				else
+				{
+					selectedMovementMode = 3;
+				}
+				
+				UpdateUI();
 			}
 			
 			function ReadyButtonClick()
 			{
-				alert("Ready Button!");
-			}
-			
-			function FirstMoveGunLeftButtonClick()
-			{
-				alert("First Move Gun Left Button!");
-			}
-			
-			function FirstMoveGunRightButtonClick()
-			{
-				alert("First Move Gun Right Button!");
+				airconsole.message(AirConsole.SCREEN, "0|0");
 			}
 			
 			function FirstMoveButtonClick()
 			{
-				alert("First Move Button!");
+				airconsole.message(AirConsole.SCREEN, "1|" + selectedMovementMode);
 			}
 			
-			function SecondMoveGunLeftButtonClick()
+			function FirstMoveGunLeftButtonClick()
 			{
-				alert("Second Move Gun Left Button!");
+				if(localMovement1LeftMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "2|1");
+				}
+				else if (localMovement1LeftMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "2|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "2|0");
+				}
 			}
 			
-			function SecondMoveGunRightButtonClick()
+			function FirstMoveGunRightButtonClick()
 			{
-				alert("Second Move Gun Right Button!");
+				if(localMovement1RightMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "3|1");
+				}
+				else if (localMovement1RightMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "3|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "3|0");
+				}
 			}
 			
 			function SecondMoveButtonClick()
 			{
-				alert("Second Move Button!");
+				airconsole.message(AirConsole.SCREEN, "4|" + selectedMovementMode);
 			}
 			
-			function ThirdMoveGunLeftButtonClick()
+			function SecondMoveGunLeftButtonClick()
 			{
-				alert("Third Move Gun Left Button!");
+				if(localMovement2LeftMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "5|1");
+				}
+				else if (localMovement2LeftMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "5|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "5|0");
+				}
 			}
 			
-			function ThirdMoveGunRightButtonClick()
+			function SecondMoveGunRightButtonClick()
 			{
-				alert("Third Move Gun Right Button!");
+				if(localMovement2RightMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "6|1");
+				}
+				else if (localMovement2RightMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "6|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "6|0");
+				}
 			}
 			
 			function ThirdMoveButtonClick()
 			{
-				alert("Third Move Button!");
+				airconsole.message(AirConsole.SCREEN, "7|" + selectedMovementMode);
 			}
 			
-			function FourthMoveGunLeftButtonClick()
+			function ThirdMoveGunLeftButtonClick()
 			{
-				alert("Fourth Move Gun Left Button!");
+				if(localMovement3LeftMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "8|1");
+				}
+				else if (localMovement3LeftMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "8|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "8|0");
+				}
 			}
 			
-			function FourthMoveGunRightButtonClick()
+			function ThirdMoveGunRightButtonClick()
 			{
-				alert("Fourth Move Gun Right Button!");
+				if(localMovement3RightMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "9|1");
+				}
+				else if (localMovement3RightMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "9|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "9|0");
+				}
 			}
 			
 			function FourthMoveButtonClick()
 			{
-				alert("Fourth Move Button!");
+				airconsole.message(AirConsole.SCREEN, "10|" + selectedMovementMode);
+			}
+			
+			function FourthMoveGunLeftButtonClick()
+			{
+				if(localMovement4LeftMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "11|1");
+				}
+				else if (localMovement4LeftMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "11|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "11|0");
+				}
+			}
+			
+			function FourthMoveGunRightButtonClick()
+			{
+				if(localMovement4RightMode == 0)
+				{
+					airconsole.message(AirConsole.SCREEN, "12|1");
+				}
+				else if (localMovement4RightMode == 1)
+				{
+					airconsole.message(AirConsole.SCREEN, "12|2");
+				}
+				else
+				{
+					airconsole.message(AirConsole.SCREEN, "12|0");
+				}
 			}
         </script>
         <style type="text/css">
@@ -189,51 +636,64 @@
 			<div style="float:left; width:33%; height:100%">
 				<div style="float:top; height:20%;">
 					<div style="float:left; width:25%; height:100%;">
-						<img id="Health1" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+						<img id="Health1" src="Heart_Empty.png" style="float:left; width:80%; height:80%; margin:10%"/>
 					</div>
 					<div style="float:left; width:25%; height:100%;">
-						<img id="Health2" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+						<img id="Health2" src="Heart_Empty.png" style="float:left; width:80%; height:80%; margin:10%"/>
 					</div>
 					<div style="float:left; width:25%; height:100%;">
-						<img id="Health3" src="Heart_Full.png" style="float:left; width:80%; height:80%; margin:10%"/>
+						<img id="Health3" src="Heart_Empty.png" style="float:left; width:80%; height:80%; margin:10%"/>
 					</div>
 					<div style="float:left; width:25%; height:100%;">
 						<img id="Health4" src="Heart_Empty.png" style="float:left; width:80%; height:80%; margin:10%"/>
 					</div>
 				</div>
-				<div style="float:top; height:40%;">
+				<div style="float:top; height:30%;">
 					<div style="float:left; width:25%; height:100%;"/>
 					</div>
 					<div style="float:left; width:50%; height:100%;">
-						<img id="UpButton" src="Arrow_Up.png" style="float:center; width:80%; height:80%; margin:10%" onclick="UpButtonClick()"/>
+						<img id="UpButton" src="Frame_Straight.png" style="float:center; width:80%; height:80%; margin:10%" onclick="UpButtonClick()"/>
 					</div>
 					<div style="float:left; width:25%; height:100%;">
 					</div>
 				</div>
-				<div style="float:top; height:40%;">
+				<div style="float:top; height:10%;">
+					<label id="StraightTokensAmountLabel" style="font-size:200%;">x3</label>
+				</div>
+				<div style="float:top; height:30%;">
 					<div style="float:left; width:50%; height:100%;">
-						<img id="LeftButton" src="Arrow_Left.png" style="float:center; width:80%; height:80%; margin:10%" onclick="LeftButtonClick()"/>
+						<img id="LeftButton" src="Frame_Left.png" style="float:center; width:80%; height:80%; margin:10%" onclick="LeftButtonClick()"/>
 					</div>
 					<div style="float:left; width:50%; height:100%;">
-						<img id="RightButton" src="Arrow_Right.png" style="float:center; width:80%; height:80%; margin:10%" onclick="RightButtonClick()"/>
+						<img id="RightButton" src="Frame_Right.png" style="float:center; width:80%; height:80%; margin:10%" onclick="RightButtonClick()"/>
+					</div>
+				</div>
+				<div style="float:top; height:10%;">
+					<div style="float:left; width:50%; height:100%;">
+						<label id="LeftTokensAmountLabel" style="font-size:200%;">x3</label>
+					</div>
+					<div style="float:left; width:50%; height:100%;">
+						<label id="RightTokensAmountLabel" style="font-size:200%;">x3</label>
 					</div>
 				</div>
 			</div>
 			<div style="float:left; width:33%; height:100%">
 				<div style="float:top; height:20%;">
-					<div style="float:left; width:20%; height:100%;">
-					</div>
-					<div style="float:left; width:30%; height:100%; background-color:white;">
+					<div style="float:left; width:25%; height:100%;">
 						<img src="Cannon.png" style="float:center; width:80%; height:80%; margin:10%"/>
 					</div>
-					<div style="float:left; width:30%; height:100%;">
-						<label id="GunTokensAmountLabel" style="font-size:72;">x8</label>
+					<div style="float:left; width:25%; height:100%;">
+						<label id="GunTokensAmountLabel" style="font-size:200%;">x8</label>
 					</div>
-					<div style="float:left; width:20%; height:100%;">
+					<div style="float:left; width:25%; height:100%;">
+						<img src="Grappling_Hook.png" style="float:center; width:80%; height:80%; margin:10%"/>
+					</div>
+					<div style="float:left; width:25%; height:100%;">
+						<label id="HookTokensAmountLabel" style="font-size:200%;">x2</label>
 					</div>
 				</div>
 				<div style="float:top; height:80%;">
-					<img src="Frame.png" style="float:center; width:98%; height:98%; margin:1%;" onclick="ReadyButtonClick()"/>
+					<img id="ReadyButton" src="Frame_Ready.png" style="float:center; width:98%; height:98%; margin:1%;" onclick="ReadyButtonClick()"/>
 				</div>
 			</div>
 			<div style="float:left; width:33%; height:100%;">
