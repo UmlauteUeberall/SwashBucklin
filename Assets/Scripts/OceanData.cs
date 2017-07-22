@@ -55,25 +55,26 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
-                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
                 entity = new CRockEntity(x, y, EOrientation.North);
                 mi_entityList.Add(entity);
             }
 
             // make ships
-            for (int i = 0; i < _numPlayers; i++)
+            foreach(var kvp in CGameController.Get.mu_PlayerDict)
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
-                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)mu_xSize, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)mu_ySize, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
 
                 EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);
 
-                entity = new CShipEntity(x, y, or);
+                int deviceId = kvp.Key;
+                entity = new CShipEntity(x, y, or, deviceId);
                 mi_entityList.Add(entity);
             }
 
@@ -116,8 +117,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
-                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
 
                 EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);

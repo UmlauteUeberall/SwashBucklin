@@ -23,6 +23,8 @@ public class CGameController : SingletonBehaviour<CGameController>
     private int mi_round = 0;
     private EGameStage mi_gameStage = EGameStage.SELECTION_PHASE;
 
+    public Dictionary<int, CPlayer> mu_PlayerDict = new Dictionary<int, CPlayer>();
+
     void Awake()
     {
         //L.APP_NAME = "SwashBucklin";
@@ -35,8 +37,6 @@ public class CGameController : SingletonBehaviour<CGameController>
     private void Start()
     {
         mu_ocean = new COceanData();
-        mu_ocean.fu_CreateOcean(2, 20, 4, 8);
-        fu_CreateViews();
     }
 
     private void Update()
@@ -55,16 +55,18 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     void OnConnect(int device_id)
     {
-        Debug.Log("device id: " + device_id);
+        if (AirConsole.instance.GetControllerDeviceIds().Count < 8)
+        {
+            mu_PlayerDict.Add(device_id, new CPlayer(device_id));
+        }
+
         if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 2)
+            if (AirConsole.instance.GetControllerDeviceIds().Count >= 1) // TODO: set to min players
             {
-                //StartGame();
-            }
-            else
-            {
-                //uiText.text = "NEED MORE PLAYERS";
+                AirConsole.instance.SetActivePlayers(8);
+                mu_ocean.fu_CreateOcean(mu_PlayerDict.Count, 20, 4, 8);
+                fu_CreateViews();
             }
         }
     }
@@ -74,15 +76,11 @@ public class CGameController : SingletonBehaviour<CGameController>
         int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
         if (active_player != -1)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 2)
+            if (AirConsole.instance.GetControllerDeviceIds().Count >= 1)
             {
-                // StartGame();
             }
             else
             {
-                AirConsole.instance.SetActivePlayers(0);
-//                 ResetBall(false);
-//                 uiText.text = "PLAYER LEFT - NEED MORE PLAYERS";
             }
         }
     }
@@ -94,19 +92,10 @@ public class CGameController : SingletonBehaviour<CGameController>
     /// <param name="data">Data.</param>
     void OnMessage(int device_id, JToken data)
     {
-        int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        if (active_player != -1)
-        {
-            //             if (active_player == 0)
-            //             {
-            //                 this.racketLeft.velocity = Vector3.up * (float)data["move"];
-            //             }
-            //             if (active_player == 1)
-            //             {
-            //                 this.racketRight.velocity = Vector3.up * (float)data["move"];
-            //             }
-            Debug.Log(data.ToString());
-        }
+        CPlayer player = mu_PlayerDict[device_id];
+
+        Debug.Log(data.ToString());
+        player.fu_UpdateStatus(data.ToString());
     }
 
     public void fu_CreateViews()

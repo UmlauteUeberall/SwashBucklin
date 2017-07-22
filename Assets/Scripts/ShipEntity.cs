@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace Ocean
 {
-
     public class CShipEntity : AOceanEntity
     {
-        public int pu_Health;
+        int mu_deviceId;
 
-        public CShipEntity(int _x, int _y, EOrientation _orientation) : base(_x, _y, _orientation)
+        public CShipEntity(int _x, int _y, EOrientation _orientation, int _deviceId) : base(_x, _y, _orientation)
         {
-            pu_Health = 10;
+            mu_deviceId = _deviceId;
         }
 
         public override EOceanEntityType pu_EntityType
@@ -100,13 +99,16 @@ namespace Ocean
 
         private void fi_BumpIntoShip(CShipEntity _otherShip)
         {
-            pu_Health -= 1;
-            _otherShip.pu_Health -= 1;
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            CPlayer otherPlayer = CGameController.Get.mu_PlayerDict[_otherShip.mu_deviceId];
+            player.pu_healthAmount -= 1;
+            otherPlayer.pu_healthAmount -= 1;
         }
 
         private void fi_BumpIntoRock()
         {
-            pu_Health -= 1;
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            player.pu_healthAmount -= 1;
         }
 
         private void fi_GetOffsetForOrientation(EOrientation _orientation, out int _xOffset, out int _yOffset)
