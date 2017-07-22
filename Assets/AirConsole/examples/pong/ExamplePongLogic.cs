@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 
@@ -11,7 +8,6 @@ public class ExamplePongLogic : MonoBehaviour {
 	public Rigidbody2D racketRight;
 	public Rigidbody2D ball;
 	public float ballSpeed = 10f;
-	public Text uiText;
 #if !DISABLE_AIRCONSOLE 
 	private int scoreRacketLeft = 0;
 	private int scoreRacketRight = 0;
@@ -36,7 +32,6 @@ public class ExamplePongLogic : MonoBehaviour {
 			if (AirConsole.instance.GetControllerDeviceIds ().Count >= 2) {
 				StartGame ();
 			} else {
-				uiText.text = "NEED MORE PLAYERS";
 			}
 		}
 	}
@@ -53,7 +48,6 @@ public class ExamplePongLogic : MonoBehaviour {
 			} else {
 				AirConsole.instance.SetActivePlayers (0);
 				ResetBall (false);
-				uiText.text = "PLAYER LEFT - NEED MORE PLAYERS";
 			}
 		}
 	}
@@ -99,7 +93,6 @@ public class ExamplePongLogic : MonoBehaviour {
 
 	void UpdateScoreUI () {
 		// update text canvas
-		uiText.text = scoreRacketLeft + ":" + scoreRacketRight;
 	}
 
 	void FixedUpdate () {
