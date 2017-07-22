@@ -61,6 +61,8 @@ namespace Ocean
             pu_movement4LeftMode = 0;
             pu_movement4RightMode = 0;
             pu_gameState = 0;
+
+            fu_UpdateClient();
         }
 
         public void fu_UpdateClient()
@@ -93,30 +95,713 @@ namespace Ocean
             AirConsole.instance.Message(mu_deviceId, information);
         }
 
+        private void HandleClientMessage(int _pressedButton, int _buttonParameter)
+        {
+            switch (_pressedButton)
+            {
+                case 0:
+                    // Ready Button
+                    if ( pu_isReady == 0 ) { pu_isReady = 1; } else { pu_isReady = 0; }
+                    break;
+                case 1:
+                    // Movement First
+                    // 1. Check if same Mode as current, so we can reset
+                    if(_buttonParameter == pu_movement1Mode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch(pu_movement1Mode)
+                    {
+                        case 1:
+                            pu_tokenStraightAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenLeftAmount += 1;
+                            break;
+                        case 3:
+                            pu_tokenRightAmount += 1;
+                            break;
+                    }
+
+                    pu_movement1Mode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch(_buttonParameter)
+                    {
+                        case 1:
+                            if(pu_tokenStraightAmount > 0)
+                            {
+                                pu_tokenStraightAmount -= 1;
+                                pu_movement1Mode = 1;
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenLeftAmount > 0)
+                            {
+                                pu_tokenLeftAmount -= 1;
+                                pu_movement1Mode = 2;
+                            }
+                            break;
+                        case 3:
+                            if (pu_tokenRightAmount > 0)
+                            {
+                                pu_tokenRightAmount -= 1;
+                                pu_movement1Mode = 3;
+                            }
+                            break;
+                    }
+                    break;
+                case 2:
+                    // Movement First Gun Left
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement1LeftMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement1LeftMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement1LeftMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement1LeftMode = 1;
+                            }
+                            else
+                            {
+                                if(pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement1LeftMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement1LeftMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement1LeftMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement1LeftMode = 0;
+                                }
+                            }
+                            break;
+                    }
+
+                    break;
+                case 3:
+                    // Movement First Gun Right
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement1RightMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement1RightMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement1RightMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement1RightMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement1RightMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement1RightMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement1RightMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement1RightMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 4:
+                    // Movement Second
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement2Mode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement2Mode)
+                    {
+                        case 1:
+                            pu_tokenStraightAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenLeftAmount += 1;
+                            break;
+                        case 3:
+                            pu_tokenRightAmount += 1;
+                            break;
+                    }
+
+                    pu_movement2Mode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenStraightAmount > 0)
+                            {
+                                pu_tokenStraightAmount -= 1;
+                                pu_movement2Mode = 1;
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenLeftAmount > 0)
+                            {
+                                pu_tokenLeftAmount -= 1;
+                                pu_movement2Mode = 2;
+                            }
+                            break;
+                        case 3:
+                            if (pu_tokenRightAmount > 0)
+                            {
+                                pu_tokenRightAmount -= 1;
+                                pu_movement2Mode = 3;
+                            }
+                            break;
+                    }
+                    break;
+                case 5:
+                    // Movement Second Gun Left
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement2LeftMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement2LeftMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement2LeftMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement2LeftMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement2LeftMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement2LeftMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement2LeftMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement2LeftMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 6:
+                    // Movement Second Gun Right
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement2RightMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement2RightMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement2RightMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement2RightMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement2RightMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement2RightMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement2RightMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement2RightMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 7:
+                    // Movement Third
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement3Mode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement3Mode)
+                    {
+                        case 1:
+                            pu_tokenStraightAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenLeftAmount += 1;
+                            break;
+                        case 3:
+                            pu_tokenRightAmount += 1;
+                            break;
+                    }
+
+                    pu_movement3Mode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenStraightAmount > 0)
+                            {
+                                pu_tokenStraightAmount -= 1;
+                                pu_movement3Mode = 1;
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenLeftAmount > 0)
+                            {
+                                pu_tokenLeftAmount -= 1;
+                                pu_movement3Mode = 2;
+                            }
+                            break;
+                        case 3:
+                            if (pu_tokenRightAmount > 0)
+                            {
+                                pu_tokenRightAmount -= 1;
+                                pu_movement3Mode = 3;
+                            }
+                            break;
+                    }
+                    break;
+                case 8:
+                    // Movement Third Gun Left
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement3LeftMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement3LeftMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement3LeftMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement3LeftMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement3LeftMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement3LeftMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement3LeftMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement3LeftMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 9:
+                    // Movement Third Gun Right
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement3RightMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement3RightMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement3RightMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement3RightMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement3RightMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement3RightMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement3RightMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement3RightMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 10:
+                    // Movement Fourth
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement4Mode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement4Mode)
+                    {
+                        case 1:
+                            pu_tokenStraightAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenLeftAmount += 1;
+                            break;
+                        case 3:
+                            pu_tokenRightAmount += 1;
+                            break;
+                    }
+
+                    pu_movement4Mode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenStraightAmount > 0)
+                            {
+                                pu_tokenStraightAmount -= 1;
+                                pu_movement4Mode = 1;
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenLeftAmount > 0)
+                            {
+                                pu_tokenLeftAmount -= 1;
+                                pu_movement4Mode = 2;
+                            }
+                            break;
+                        case 3:
+                            if (pu_tokenRightAmount > 0)
+                            {
+                                pu_tokenRightAmount -= 1;
+                                pu_movement4Mode = 3;
+                            }
+                            break;
+                    }
+                    break;
+                case 11:
+                    // Movement Fourth Gun Left
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement4LeftMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement4LeftMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement4LeftMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement4LeftMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement4LeftMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement4LeftMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement4LeftMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement4LeftMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case 12:
+                    // Movement Fourth Gun Right
+                    // 1. Check if same Mode as current, so we can reset
+                    if (_buttonParameter == pu_movement4RightMode)
+                    {
+                        _buttonParameter = 0;
+                    }
+
+                    // 2. Reset Value to Empty, so we can get our Tokens back easily!
+                    switch (pu_movement4RightMode)
+                    {
+                        case 1:
+                            pu_tokenHookAmount += 1;
+                            break;
+                        case 2:
+                            pu_tokenGunAmount += 1;
+                            break;
+                    }
+
+                    pu_movement4RightMode = 0;
+
+                    // 3. Set the Movement Mode to the correct one!
+                    switch (_buttonParameter)
+                    {
+                        case 1:
+                            if (pu_tokenHookAmount > 0)
+                            {
+                                pu_tokenHookAmount -= 1;
+                                pu_movement4RightMode = 1;
+                            }
+                            else
+                            {
+                                if (pu_tokenGunAmount > 0)
+                                {
+                                    pu_tokenGunAmount -= 1;
+                                    pu_movement4RightMode = 2;
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (pu_tokenGunAmount > 0)
+                            {
+                                pu_tokenGunAmount -= 1;
+                                pu_movement4RightMode = 2;
+                            }
+                            else
+                            {
+                                if (pu_tokenHookAmount > 0)
+                                {
+                                    pu_tokenHookAmount -= 1;
+                                    pu_movement4RightMode = 1;
+                                }
+                                else
+                                {
+                                    pu_movement4RightMode = 0;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+            }
+        }
+
         public void fu_UpdateStatus(string _statusMessage)
         {
+            int PressedButton = 0;
+            int ButtonParameter = 0;
+
             string[] msgs = _statusMessage.Split('|');
 
-            int.TryParse(msgs[0], out pu_isReady);
-            int.TryParse(msgs[1], out pu_healthAmount);
-            int.TryParse(msgs[2], out pu_tokenGunAmount);
-            int.TryParse(msgs[3], out pu_tokenHookAmount);
-            int.TryParse(msgs[4], out pu_tokenStraightAmount);
-            int.TryParse(msgs[5], out pu_tokenLeftAmount);
-            int.TryParse(msgs[6], out pu_tokenRightAmount);
-            int.TryParse(msgs[7], out pu_movement1Mode);
-            int.TryParse(msgs[8], out pu_movement1LeftMode);
-            int.TryParse(msgs[9], out pu_movement1RightMode);
-            int.TryParse(msgs[10], out pu_movement2Mode);
-            int.TryParse(msgs[11], out pu_movement2LeftMode);
-            int.TryParse(msgs[12], out pu_movement2RightMode);
-            int.TryParse(msgs[13], out pu_movement3Mode);
-            int.TryParse(msgs[14], out pu_movement3LeftMode);
-            int.TryParse(msgs[15], out pu_movement3RightMode);
-            int.TryParse(msgs[16], out pu_movement4Mode);
-            int.TryParse(msgs[17], out pu_movement4LeftMode);
-            int.TryParse(msgs[18], out pu_movement4RightMode);
-            int.TryParse(msgs[19], out pu_gameState);
+            PressedButton = int.Parse(msgs[0]);
+            ButtonParameter = int.Parse(msgs[1]);
+
+            // Handle what comes from the Client!
+            HandleClientMessage(PressedButton, ButtonParameter);
+
+            // Update the real values to the clients GUI!
+            fu_UpdateClient();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using NDream.AirConsole;
@@ -9,12 +8,10 @@ public class ExampleBasicLogic : MonoBehaviour {
 
 	public GameObject logo;
 	public Renderer profilePicturePlaneRenderer;
-	public Text logWindow;
 	private bool turnLeft;
 	private bool turnRight;
 
 	private float highScore = 0;
-	public Text highScoreDisplay;
 
 #if !DISABLE_AIRCONSOLE
 	void Awake () {
@@ -34,24 +31,12 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.onPersistentDataStored += OnPersistentDataStored;
 		AirConsole.instance.onPersistentDataLoaded += OnPersistentDataLoaded;
 		AirConsole.instance.onPremium += OnPremium;
-		logWindow.text = "Connecting... \n \n";
 	}
 
 	void OnReady (string code) {
-		//Log to on-screen Console
-		logWindow.text = "ExampleBasic: AirConsole is ready! \n \n";
-
-		//Mark Buttons as Interactable as soon as AirConsole is ready
-		Button[] allButtons = (Button[])GameObject.FindObjectsOfType ((typeof(Button)));
-		foreach (Button button in allButtons) {
-			button.interactable = true;
-		}
 	}
 
 	void OnMessage (int from, JToken data) {
-		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Incoming message from device: " + from + ": " + data.ToString () + " \n \n");
-		
 		// Rotate the AirConsole Logo to the right
 		if ((string)data == "left") {
 			turnLeft = true;
@@ -79,37 +64,30 @@ public class ExampleBasicLogic : MonoBehaviour {
 
 	void OnConnect (int device_id) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Device: " + device_id + " connected. \n \n");
 	}
 
 	void OnDisconnect (int device_id) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Device: " + device_id + " disconnected. \n \n");
 	}
 
 	void OnDeviceStateChange (int device_id, JToken data) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Device State Change on device: " + device_id + ", data: " + data + "\n \n");
 	}
 
 	void OnCustomDeviceStateChange (int device_id, JToken custom_data) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Custom Device State Change on device: " + device_id + ", data: " + custom_data + "\n \n");
 	}
 
 	void OnDeviceProfileChange (int device_id) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Device " + device_id + " made changes to its profile. \n \n");
 	}
 
 	void OnAdShow () {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "On Ad Show \n \n");
 	}
 
 	void OnAdComplete (bool adWasShown) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Ad Complete. Ad was shown: " + adWasShown + "\n \n");
 	}
 
 	void OnGameEnd () {
@@ -120,32 +98,26 @@ public class ExampleBasicLogic : MonoBehaviour {
 
 	void OnHighScores (JToken highscores) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "On High Scores " + highscores + " \n \n");
 		//logWindow.text = logWindow.text.Insert (0, "Converted Highscores: " + HighScoreHelper.ConvertHighScoresToTables(highscores).ToString() + " \n \n");
 	}
 
 	void OnHighScoreStored (JToken highscore) {
 		//Log to on-screen Console
 		if (highscore == null) {
-			logWindow.text = logWindow.text.Insert (0, "On High Scores Stored (null)\n \n");
 		} else {
-			logWindow.text = logWindow.text.Insert (0, "On High Scores Stored " + highscore + "\n \n");
 		}		
 	}
 
 	void OnPersistentDataStored (string uid) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Stored persistentData for uid " + uid + " \n \n");
 	}
 
 	void OnPersistentDataLoaded (JToken data) {
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Loaded persistentData: " + data + " \n \n");
 	}
 
 	void OnPremium(int device_id){
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "On Premium (device " + device_id + ") \n \n");
 	}
 
 	void Update () {
@@ -169,12 +141,10 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.Message (idOfFirstController, "Hey there, first controller!");
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Sent a message to first Controller \n \n");
 	}
 
 	public void BroadcastMessageToAllDevices () {
 		AirConsole.instance.Broadcast ("Hey everyone!");
-		logWindow.text = logWindow.text.Insert (0, "Broadcast a message. \n \n");
 	}
 
 	public void DisplayDeviceID () {
@@ -182,7 +152,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		int device_id = AirConsole.instance.GetDeviceId ();
 
 		//Log to on-screen Console		
-		logWindow.text = logWindow.text.Insert (0, "This device's id: " + device_id + "\n \n");
 	}
 
 	public void DisplayNicknameOfFirstController () {
@@ -195,7 +164,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		string nicknameOfFirstController = AirConsole.instance.GetNickname (idOfFirstController);
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "The first controller's nickname is: " + nicknameOfFirstController + "\n \n");
 		
 	}
 
@@ -228,7 +196,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		string urlOfProfilePic = AirConsole.instance.GetProfilePicture (idOfFirstController, 512);
 
 		//Log url to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "URL of Profile Picture of first Controller: " + urlOfProfilePic + "\n \n");
 		StartCoroutine (DisplayUrlPicture (urlOfProfilePic));
 	}
 
@@ -248,15 +215,13 @@ public class ExampleBasicLogic : MonoBehaviour {
 				
 				// go through all properties
 				foreach (var prop in ((JObject)data).Properties()) {
-					logWindow.text = logWindow.text.Insert (0, "Custom Data on first Controller - Key:  " + prop.Name + " / Value:" + prop.Value + "\n \n");
-				}
+					}
 
 			} else {
 				//If there's only one property, log it to on-screen Console
-				logWindow.text = logWindow.text.Insert (0, "Custom Data on first Controller: " + data + "\n \n");
+				
 			}
 		} else {
-			logWindow.text = logWindow.text.Insert (0, "No Custom Data on first Controller \n \n");
 		}
 	}
 
@@ -272,9 +237,8 @@ public class ExampleBasicLogic : MonoBehaviour {
 		//If it exists, get the data's health property and cast it as int
 		if (data != null && data ["health"] != null) {
 			int healthOfFirstController = (int)data ["health"];
-			logWindow.text = logWindow.text.Insert (0, "value 'health':" + healthOfFirstController + "\n \n");
 		} else {
-			logWindow.text = logWindow.text.Insert (0, "No 'health' property set on first Controller \n \n");
+			
 		}
 	}
 
@@ -289,7 +253,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.SetCustomDeviceState (customData);
 
 		//Log url to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Set new Custom data on Screen: " + customData + " \n \n");
 	}
 
 	public void SetLevelPropertyInCustomScreenData () {
@@ -301,11 +264,9 @@ public class ExampleBasicLogic : MonoBehaviour {
 		//The screen always has device id 0. That is the only device id you're allowed to hardcode.
 		if (AirConsole.instance.GetCustomDeviceState (0) != null) {
 
-			logWindow.text = logWindow.text.Insert (0, " \n");
 
 			// Show json string of entries
 			foreach (JToken key in AirConsole.instance.GetCustomDeviceState(0).Children()) {
-				logWindow.text = logWindow.text.Insert (0, "Custom Data on Screen: " + key + " \n");
 			}
 		}
 	}
@@ -314,7 +275,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		//This does not count devices that have been connected and then left,
 		//only devices that are still active
 		int numberOfActiveControllers = AirConsole.instance.GetControllerDeviceIds ().Count;
-		logWindow.text = logWindow.text.Insert (0, "Number of Active Controllers: " + numberOfActiveControllers + "\n \n");
 	}
 
 	public void SetActivePlayers () {
@@ -327,7 +287,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		}
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Active Players were set to:\n" + activePlayerIds + " \n \n");
 	}
 
 	public void DisplayDeviceIDOfPlayerOne () {
@@ -336,9 +295,7 @@ public class ExampleBasicLogic : MonoBehaviour {
 
 		//Log to on-screen Console
 		if (device_id != -1) {
-			logWindow.text = logWindow.text.Insert (0, "Player #1 has device ID: " + device_id + " \n \n");
 		} else {
-			logWindow.text = logWindow.text.Insert (0, "There is no active player # 1 - Set Active Players first!\n \n");
 		}
 	}
 
@@ -347,7 +304,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		float time = AirConsole.instance.GetServerTime ();
 		
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Server Time: " + time + "\n \n");
 	}
 
 	public void DisplayIfFirstContrllerIsLoggedIn () {
@@ -357,7 +313,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		bool firstPlayerLoginStatus = AirConsole.instance.IsUserLoggedIn (idOfFirstController);
 		
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "First Player is logged in: " + firstPlayerLoginStatus + "\n \n");
 	}
 
 	public void HideDefaultUI () {
@@ -365,7 +320,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.ShowDefaultUI (false);
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Hid Default UI" + "\n \n");
 	}
 
 	public void ShowDefaultUI () {
@@ -373,7 +327,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.ShowDefaultUI (true);
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Showed Default UI" + "\n \n");
 	}
 
 	public void NavigateHome () {
@@ -381,7 +334,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 		AirConsole.instance.NavigateHome ();
 
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Navigated back to home screen" + "\n \n");
 	}
 
 	public void NavigateToPong () {
@@ -393,19 +345,16 @@ public class ExampleBasicLogic : MonoBehaviour {
 		//Display an Advertisement
 		AirConsole.instance.ShowAd ();
 		//Log to on-screen Console
-		logWindow.text = logWindow.text.Insert (0, "Called ShowAd" + "\n \n");
 	}
 
 	public void IncreaseScore () {
 		//increase current score and show on ui
 		highScore += 1;
-		highScoreDisplay.text = "Current Score: " + highScore;
 	}
 
 	public void ResetScore () {
 		//reset current score and show on ui
 		highScore = 0;
-		highScoreDisplay.text = "Current Score: " + highScore;
 	}
 
 	public void RequestHighScores () {
@@ -450,7 +399,6 @@ public class ExampleBasicLogic : MonoBehaviour {
 	public void IsMasterPremium(){
 		bool masterIsPremium = AirConsole.instance.IsPremium (AirConsole.instance.GetMasterControllerDeviceId ());
 
-		logWindow.text = logWindow.text.Insert (0, "Master device is Premium: " + masterIsPremium + "\n \n");
 	}
 
 	public void ShowPremiumDeviceIDs () {
@@ -459,11 +407,9 @@ public class ExampleBasicLogic : MonoBehaviour {
 
 		if (premiumDevices.Count > 0) {
 			foreach (int deviceId in premiumDevices){
-				logWindow.text = logWindow.text.Insert (0, "Device " + deviceId + " is Premium" + "\n \n");
 			}
 		} else {
 			//Log to on-screen Console
-			logWindow.text = logWindow.text.Insert (0, "No premium controllers are connected" + "\n \n");
 		}
 
 	}
