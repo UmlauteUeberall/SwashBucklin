@@ -92,7 +92,10 @@ namespace Ocean
             information += pu_gameState.ToString();
 
             // 2. Sende der device_id die Informationen zu
-            AirConsole.instance.Message(mu_deviceId, information);
+            if (AirConsole.instance)
+            {
+                AirConsole.instance.Message(mu_deviceId, information);
+            }
         }
 
         private void HandleClientMessage(int _pressedButton, int _buttonParameter)

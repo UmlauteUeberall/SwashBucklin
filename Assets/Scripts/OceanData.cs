@@ -42,7 +42,7 @@ namespace Ocean
             return mi_entityList.Where(_o => _o.pu_EntityType == _entityType).Select(_o => _o.mu_view).ToList();
         }
 
-        public void fu_CreateOcean(int _numPlayers, int _numRocks, int _numSwirls, int _numStreams)
+        public void fu_CreateOcean(int _numRocks, int _numSwirls, int _numStreams)
         {
             // first, distribute some rocks
             UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
@@ -79,7 +79,7 @@ namespace Ocean
             }
 
             // make swirls
-            for (int i = 0; i < _numPlayers; i++)
+            for (int i = 0; i < _numSwirls; i++)
             {
                 do
                 {
