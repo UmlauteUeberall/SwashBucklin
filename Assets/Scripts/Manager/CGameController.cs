@@ -5,6 +5,7 @@ using Ocean;
 using System.Collections.Generic;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 public class CGameController : SingletonBehaviour<CGameController>
 {
@@ -19,51 +20,54 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     public int pu_Round { get { return mi_round; } }
     public EGameStage pu_GameStage { get { return mi_gameStage; } }
+    public Dictionary<int, CPlayer> mu_PlayerDict = new Dictionary<int, CPlayer>();
 
     private int mi_round = 0;
     private EGameStage mi_gameStage = EGameStage.SELECTION_PHASE;
-    private EGameSubStage mi_subStage;
+    //private EGameSubStage mi_subStage;
     private float mi_gameStageTimer;
-
-    public Dictionary<int, CPlayer> mu_PlayerDict = new Dictionary<int, CPlayer>();
 
     void Awake()
     {
-        //L.APP_NAME = "SwashBucklin";
+        L.APP_NAME = "SwashBucklin";
         UnityHelper.LoadUnityLogger();
-        AirConsole.instance.onMessage += OnMessage;
-        AirConsole.instance.onConnect += OnConnect;
-        AirConsole.instance.onDisconnect += OnDisconnect;
+
+        if (AirConsole.instance)
+        {
+            AirConsole.instance.onMessage += OnMessage;
+            AirConsole.instance.onConnect += OnConnect;
+            AirConsole.instance.onDisconnect += OnDisconnect;
+        }
     }
 
     private void Start()
     {
         mu_ocean = new COceanData();
+
+
+        /// HACK ///
+        //mu_PlayerDict.Add(1, new CPlayer(1));
+        //mu_PlayerDict.Add(2, new CPlayer(2));
+        //mu_ocean.fu_CreateOcean(20, 4, 8);
+        //fu_CreateViews();
+        /// HACK ///
     }
 
     private void Update()
     {
-        if (mi_gameStage != EGameStage.SELECTION_PHASE)
+        mi_gameStageTimer -= Time.deltaTime;
+
+        if (mi_gameStageTimer <= 0.0f ||
+                            (mi_gameStage == EGameStage.SELECTION_PHASE && mu_PlayerDict.Count > 0
+                            && mu_PlayerDict.Values.All(_o => _o.pu_isReady != 0)))
         {
-            mi_gameStageTimer -= Time.deltaTime;
-            switch(mi_subStage)
-            {
-                case EGameSubStage.MOVE_STREAM:
-                break;
-                case EGameSubStage.MOVE_SHIP:
-                break;
-                case EGameSubStage.HOOK_ENEMY:
-                break;
-                case EGameSubStage.SHOOT_ENEMY:
-                break;
-
-            }
-
-            if (mi_gameStageTimer <= 0.0f)
-            {
-                mi_gameStageTimer = 1.0f;
-            }
+            fu_ProcessNextStage();
         }
+    }
+
+    void OnGUI()
+    {
+        GUILayout.Box(mi_gameStageTimer.ToString());
     }
 
     void OnConnect(int device_id)
@@ -78,7 +82,12 @@ public class CGameController : SingletonBehaviour<CGameController>
             if (AirConsole.instance.GetControllerDeviceIds().Count >= 1) // TODO: set to min players
             {
                 AirConsole.instance.SetActivePlayers(8);
-                mu_ocean.fu_CreateOcean(mu_PlayerDict.Count, 20, 4, 8);
+
+
+                /// TODO: richtiges Spiel Starten
+
+
+                mu_ocean.fu_CreateOcean(20, 4, 8);
                 fu_CreateViews();
             }
         }
@@ -88,7 +97,9 @@ public class CGameController : SingletonBehaviour<CGameController>
     {
         if (mu_PlayerDict.ContainsKey(device_id))
         {
-
+            mu_ocean.fu_GetListOfType(EOceanEntityType.Ship).Cast<CShipEntity>().
+                FirstOrDefault(_o => _o.pu_OwnerId == device_id).
+                fu_Kill();
             mu_PlayerDict.Remove(device_id);
         }
 
@@ -115,7 +126,7 @@ public class CGameController : SingletonBehaviour<CGameController>
     {
         CPlayer player = mu_PlayerDict[device_id];
 
-        Debug.Log(data.ToString());
+        L.Log(data.ToString());
         player.fu_UpdateStatus(data.ToString());
     }
 
@@ -134,7 +145,7 @@ public class CGameController : SingletonBehaviour<CGameController>
                     prefab = mu_RockPrefab.gameObject;
                     break;
                 case EOceanEntityType.Ship:
-                Debug.Log("Ship created");
+                    L.Log("Ship created");
                     prefab = mu_ShipPrefab.gameObject;
                     break;
                 case EOceanEntityType.Storm:
@@ -176,32 +187,87 @@ public class CGameController : SingletonBehaviour<CGameController>
         {
             gs = -1;
             mi_round++;
-            mi_gameStageTimer = 1.0f;
-        }
+            mi_gameStageTimer = 60.0f;
 
-        mi_gameStage = (EGameStage) gs;
+            mu_PlayerDict.Values.ForEach(_o =>
+            {
+                _o.pu_gameState = 0;
+                _o.fu_UpdateClient();
+            });
+
+            int rnd;
+            foreach (var p in mu_PlayerDict.Values)
+            {
+                rnd = Random.Range(4, 7);
+                for (int i = rnd; i > 0; i++)
+                {
+                    rnd = Random.Range(0, 5);
+                    switch (rnd)
+                    {
+                        case 0:
+                            p.pu_tokenGunAmount = Mathf.Min(1 + p.pu_tokenGunAmount, CPlayer.pu_tokenGunMax);
+                            break;
+                        case 1:
+                            p.pu_tokenHookAmount = Mathf.Min(1 + p.pu_tokenHookAmount, CPlayer.pu_tokenHookMax);
+                            break;
+                        case 2:
+                            p.pu_tokenLeftAmount = Mathf.Min(1 + p.pu_tokenLeftAmount, CPlayer.pu_tokenLeftMax);
+                            break;
+                        case 3:
+                            p.pu_tokenRightAmount = Mathf.Min(1 + p.pu_tokenRightAmount, CPlayer.pu_tokenRightMax);
+                            break;
+                        case 4:
+                            p.pu_tokenStraightAmount = Mathf.Min(1 + p.pu_tokenStraightAmount, CPlayer.pu_tokenStraightMax);
+                            break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            L.Log("Set");
+            mi_gameStageTimer = 1.0f;
+            mu_PlayerDict.Values.ForEach(_o => _o.pu_gameState = 1);
+        }
+        mu_PlayerDict.Values.ForEach(_o =>
+        {
+            _o.pu_isReady = 0;
+            _o.fu_UpdateClient();
+        });
+
+
+
+        mi_gameStage = (EGameStage)gs;
 
         var ets = mu_ocean.fu_GetListOfType(EOceanEntityType.Ship);
-        foreach (CShipEntity e in ets)
+        foreach (CShipEntity e in ets.Randomize())      // Lazy as fuck
         {
             e.fu_ProcessStreamsAndSwirls();
         }
-        foreach (CShipEntity e in ets)
+        foreach (CShipEntity e in ets.Randomize())
         {
             e.fu_ProcessMove(mi_gameStage);
         }
-        foreach (CShipEntity e in ets)
+        foreach (CShipEntity e in ets.Randomize())
         {
             e.fu_ProcessHooks(mi_gameStage);
         }
-        foreach (CShipEntity e in ets)
+        foreach (CShipEntity e in ets.Randomize())
         {
             e.fu_ProcessCannons(mi_gameStage);
+        }
+
+        foreach (CShipEntity e in ets.Randomize())
+        {
+            if (e.fu_KillCheck())
+            {
+                e.fu_Kill();
+            }
         }
     }
 }
 
-public enum EMoveCommand {  STAY, FORWARD, LEFT, RIGHT }
+public enum EMoveCommand { STAY, FORWARD, LEFT, RIGHT }
 
 public enum EGameStage
 {

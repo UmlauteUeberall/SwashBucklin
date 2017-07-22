@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -223,6 +224,18 @@ namespace Ocean
                 fi_GetOffsetForOrientation(or, out xStep, out yStep);
                 fi_TryShootEnemyShip(xStep, yStep, 3);
             }
+        }
+
+        public void fu_Kill()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        public bool fu_KillCheck()
+        {
+            CPlayer p = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            return p.pu_healthAmount <= 0;
         }
 
         private void fi_TryShootEnemyShip(int _xStep, int _yStep, int _maxSteps)
