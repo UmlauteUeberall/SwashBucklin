@@ -7,7 +7,7 @@ namespace Ocean
 {
     public class CShipEntity : AOceanEntity
     {
-        int mu_deviceId;
+        public int mu_deviceId;
 
         public CShipEntity(int _x, int _y, EOrientation _orientation, int _deviceId) : base(_x, _y, _orientation)
         {

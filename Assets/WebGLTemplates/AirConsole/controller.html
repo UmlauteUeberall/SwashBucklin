@@ -56,18 +56,35 @@
 				if (localGameState == 1)
 				{
 					<!-- Action-Phase -->
+					document.getElementById('ActionContent').style.display = '';
+					document.getElementById('LobbyContent').style.display = 'none';
+					document.getElementById('PlanningContent').style.display = 'none';
+					document.getElementById('HighscoreContent').style.display = 'none';
+					
 				}
 				else if (localGameState == 2)
 				{
 					<!-- Lobby-Phase -->
+					document.getElementById('ActionContent').style.display = 'none';
+					document.getElementById('LobbyContent').style.display = '';
+					document.getElementById('PlanningContent').style.display = 'none';
+					document.getElementById('HighscoreContent').style.display = 'none';
 				}
 				else if (localGameState == 3)
 				{
 					<!-- Highscore-Phase -->
+					document.getElementById('ActionContent').style.display = 'none';
+					document.getElementById('LobbyContent').style.display = 'none';
+					document.getElementById('PlanningContent').style.display = 'none';
+					document.getElementById('HighscoreContent').style.display = '';
 				}
 				else
 				{
 					<!-- Movement Planning-Phase -->
+					document.getElementById('ActionContent').style.display = 'none';
+					document.getElementById('LobbyContent').style.display = 'none';
+					document.getElementById('PlanningContent').style.display = '';
+					document.getElementById('HighscoreContent').style.display = 'none';
 				
 					<!-- Ready Button -->
 					if (localIsReady <= 0)
@@ -632,7 +649,7 @@
         </style>
     </head>
     <body onload="init()">
-		<div id="contentBox" style="width:101%">
+		<div id="PlanningContent" style="width:101%">
 			<div style="float:left; width:33%; height:100%">
 				<div style="float:top; height:20%;">
 					<div style="float:left; width:25%; height:100%;">
@@ -739,6 +756,21 @@
 						<img id="FourthMoveGunRightButton" src="Circle_Outer.png" style="float:left; width:80%; height:80%; margin:10%;" onclick="FourthMoveGunRightButtonClick()"/>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div id="LobbyContent" style="width:101%; display:none">
+			<div style="float:center; width:100%; height:100%;">
+				<label>Lobby</label>
+			</div>
+		</div>
+		<div id="ActionContent" style="width:101%; display:none">
+			<div style="float:center; width:100%; height:100%;">
+				<label>Look at the Screen!</label>
+			</div>
+		</div>
+		<div id="HighscoreContent" style="width:101%; display:none">
+			<div style="float:center; width:100%; height:100%;">
+				<label>Highscore!</label>
 			</div>
 		</div>
     </body>
