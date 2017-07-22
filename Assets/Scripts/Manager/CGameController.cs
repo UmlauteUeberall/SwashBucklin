@@ -22,6 +22,8 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     private int mi_round = 0;
     private EGameStage mi_gameStage = EGameStage.SELECTION_PHASE;
+    private EGameSubStage mi_subStage;
+    private float mi_gameStageTimer;
 
     public Dictionary<int, CPlayer> mu_PlayerDict = new Dictionary<int, CPlayer>();
 
@@ -41,14 +43,25 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (mi_gameStage != EGameStage.SELECTION_PHASE)
         {
-            mi_gameStage++;
-            List<AOceanEntity> ets = mu_ocean.fu_GetListOfType(EOceanEntityType.Ship);
-            foreach(var et in ets)
+            mi_gameStageTimer -= Time.deltaTime;
+            switch(mi_subStage)
             {
-                CShipEntity se = (CShipEntity)et;
-                //se.fu_processNextStage(mi_gameStage);
+                case EGameSubStage.MOVE_STREAM:
+                break;
+                case EGameSubStage.MOVE_SHIP:
+                break;
+                case EGameSubStage.HOOK_ENEMY:
+                break;
+                case EGameSubStage.SHOOT_ENEMY:
+                break;
+
+            }
+
+            if (mi_gameStageTimer <= 0.0f)
+            {
+                mi_gameStageTimer = 1.0f;
             }
         }
     }
@@ -73,9 +86,17 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     void OnDisconnect(int device_id)
     {
+        if (mu_PlayerDict.ContainsKey(device_id))
+        {
+
+            mu_PlayerDict.Remove(device_id);
+        }
+
+
         int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
         if (active_player != -1)
         {
+
             if (AirConsole.instance.GetControllerDeviceIds().Count >= 1)
             {
             }
@@ -140,6 +161,10 @@ public class CGameController : SingletonBehaviour<CGameController>
             tmp.transform.parent = mu_OceanPlane.transform;
 
             e.mu_view = tmp.GetComponent<AOceanEntityView>();
+            if (e.pu_EntityType == EOceanEntityType.Ship)
+            {
+                ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
+            }
         }
     }
 
@@ -151,21 +176,27 @@ public class CGameController : SingletonBehaviour<CGameController>
         {
             gs = -1;
             mi_round++;
+            mi_gameStageTimer = 1.0f;
         }
 
         mi_gameStage = (EGameStage) gs;
 
-        var ets = mu_ocean.fu_GetAllEntities();
-        foreach (AOceanEntity e in ets)
+        var ets = mu_ocean.fu_GetListOfType(EOceanEntityType.Ship);
+        foreach (CShipEntity e in ets)
         {
-            if (e.pu_EntityType == EOceanEntityType.Ship)
-            {
-                //((CShipEntity)e).fu_processNextStage(mi_gameStage);
-            }
-            else if (e.pu_EntityType == EOceanEntityType.Storm)
-            {
-                //((CStormEntity)e).fu_processNextStage(mi_gameStage);
-            }
+            e.fu_ProcessStreamsAndSwirls();
+        }
+        foreach (CShipEntity e in ets)
+        {
+            e.fu_ProcessMove(mi_gameStage);
+        }
+        foreach (CShipEntity e in ets)
+        {
+            e.fu_ProcessHooks(mi_gameStage);
+        }
+        foreach (CShipEntity e in ets)
+        {
+            e.fu_ProcessCannons(mi_gameStage);
         }
     }
 }
@@ -179,4 +210,12 @@ public enum EGameStage
     MOVE_2 = 1,
     MOVE_3 = 2,
     MOVE_4 = 3,
+}
+
+public enum EGameSubStage
+{
+    MOVE_STREAM,
+    MOVE_SHIP,
+    HOOK_ENEMY,
+    SHOOT_ENEMY
 }

@@ -46,13 +46,30 @@ namespace Ocean
         /// <summary>
         /// ship moves 1 step according to its programming
         /// </summary>
-        public void fu_ProcessMove(EMoveCommand _moveCommand)
+        public void fu_ProcessMove(EGameStage _stage)
         {
-
             int xOffset;
             int yOffset;
 
-            switch(_moveCommand)
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            EMoveCommand moveCommand = EMoveCommand.STAY;
+            switch(_stage)
+            {
+                case EGameStage.MOVE_1:
+                moveCommand = (EMoveCommand)player.pu_movement1Mode;
+                break;
+                case EGameStage.MOVE_2:
+                moveCommand = (EMoveCommand)player.pu_movement2Mode;
+                break;
+                case EGameStage.MOVE_3:
+                moveCommand = (EMoveCommand)player.pu_movement3Mode;
+                break;
+                case EGameStage.MOVE_4:
+                moveCommand = (EMoveCommand)player.pu_movement4Mode;
+                break;
+            }
+
+            switch (moveCommand)
             {
                 case EMoveCommand.LEFT:
                     pu_orientation += (int)EOrientation.MAX_ORIENTATION - 1;
@@ -87,14 +104,143 @@ namespace Ocean
             pu_y += yOffset;
         }
 
-        public void fu_ProcessHook(bool _starBoard)
+        /// <summary>
+        /// try tossing a hook and perhaps pull some other ship closer
+        /// </summary>
+        public void fu_ProcessHooks(EGameStage _moveStage)
         {
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            bool portHook = false;
+            bool starboardHook = false;
+            switch (_moveStage)
+            {
+                case EGameStage.MOVE_1:
+                {
+                    portHook = player.pu_movement1LeftMode == 2;
+                    starboardHook = player.pu_movement1RightMode == 2;
+                }
+                break;
+                case EGameStage.MOVE_2:
+                {
+                    portHook = player.pu_movement2LeftMode == 2;
+                    starboardHook = player.pu_movement2RightMode == 2;
+                }
+                break;
+                case EGameStage.MOVE_3:
+                {
+                    portHook = player.pu_movement3LeftMode == 2;
+                    starboardHook = player.pu_movement3RightMode == 2;
+                }
+                break;
+                case EGameStage.MOVE_4:
+                {
+                    portHook = player.pu_movement4LeftMode == 2;
+                    starboardHook = player.pu_movement4RightMode == 2;
+                }
+                break;
+            }
 
+            int xStep = 0;
+            int yStep = 0;
+            if (starboardHook)
+            {
+                EOrientation or = (EOrientation)(((int)pu_orientation + 1) % (int)EOrientation.MAX_ORIENTATION);
+                fi_GetOffsetForOrientation(or, out xStep, out yStep);
+                fi_TryHookEnemyShip(xStep, yStep, 2);
+            }
+            if (portHook)
+            {
+                EOrientation or = (EOrientation)(((int)pu_orientation + (int)EOrientation.MAX_ORIENTATION - 1) % (int)EOrientation.MAX_ORIENTATION);
+                fi_GetOffsetForOrientation(or, out xStep, out yStep);
+                fi_TryHookEnemyShip(xStep, yStep, 2);
+            }
         }
 
-        public void fu_ProcessFireCannon(bool _starBoard)
+        private void fi_TryHookEnemyShip(int _xStep, int _yStep, int _maxSteps)
         {
+            for (int mul = 0; mul < _maxSteps; mul++)
+            {
+                List<AOceanEntity> list = CGameController.Get.mu_ocean.fu_GetListAt(pu_x + _xStep * mul, pu_y + _yStep * mul);
+                if (list.Count > 0)
+                {
+                    if (list[0].pu_EntityType == EOceanEntityType.Ship)
+                    {
+                        list[0].pu_x -= _xStep;
+                        list[0].pu_y -= _yStep;
+                    }
+                    break;
+                }
+            }
+        }
 
+        /// <summary>
+        /// do some damage to other ships?
+        /// </summary>
+        public void fu_ProcessCannons(EGameStage _moveStep)
+        {
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
+            bool portCannon = false;
+            bool starboardCannon = false;
+            switch (_moveStep)
+            {
+                case EGameStage.MOVE_1:
+                {
+                    portCannon = player.pu_movement1LeftMode == 1;
+                    starboardCannon = player.pu_movement1RightMode == 1;
+                }
+                break;
+                case EGameStage.MOVE_2:
+                {
+                    portCannon = player.pu_movement2LeftMode == 1;
+                    starboardCannon = player.pu_movement2RightMode == 1;
+                }
+                break;
+                case EGameStage.MOVE_3:
+                {
+                    portCannon = player.pu_movement3LeftMode == 1;
+                    starboardCannon = player.pu_movement3RightMode == 1;
+                }
+                break;
+                case EGameStage.MOVE_4:
+                {
+                    portCannon = player.pu_movement4LeftMode == 1;
+                    starboardCannon = player.pu_movement4RightMode == 1;
+                }
+                break;
+            }
+
+            int xStep = 0;
+            int yStep = 0;
+            if (starboardCannon)
+            {
+                EOrientation or = (EOrientation)(((int)pu_orientation + 1) % (int)EOrientation.MAX_ORIENTATION);
+                fi_GetOffsetForOrientation(or, out xStep, out yStep);
+                fi_TryShootEnemyShip(xStep, yStep, 3);
+            }
+            if (portCannon)
+            {
+                EOrientation or = (EOrientation)(((int)pu_orientation + (int)EOrientation.MAX_ORIENTATION - 1) % (int)EOrientation.MAX_ORIENTATION);
+                fi_GetOffsetForOrientation(or, out xStep, out yStep);
+                fi_TryShootEnemyShip(xStep, yStep, 3);
+            }
+        }
+
+        private void fi_TryShootEnemyShip(int _xStep, int _yStep, int _maxSteps)
+        {
+            for (int mul = 0; mul < _maxSteps; mul++)
+            {
+                List<AOceanEntity> list = CGameController.Get.mu_ocean.fu_GetListAt(pu_x + _xStep * mul, pu_y + _yStep * mul);
+                if (list.Count > 0)
+                {
+                    if (list[0].pu_EntityType == EOceanEntityType.Ship)
+                    {
+                        CShipEntity otherShip = (CShipEntity)list[0];
+                        CPlayer otherPlayer = CGameController.Get.mu_PlayerDict[otherShip.mu_deviceId];
+                        otherPlayer.pu_healthAmount -= 1;
+                    }
+                    break;
+                }
+            }
         }
 
         private void fi_BumpIntoShip(CShipEntity _otherShip)
@@ -146,22 +292,6 @@ namespace Ocean
                 case EOrientation.MAX_ORIENTATION: // for center of swirl
                 break;
             }
-        }
-
-        /// <summary>
-        /// try tossing a hook and perhaps pull some other ship closer
-        /// </summary>
-        public void fu_ProcessHooks()
-        {
-
-        }
-
-        /// <summary>
-        /// do some damage to other ships?
-        /// </summary>
-        public void fu_ProcessCannons()
-        {
-
         }
     }
 }
