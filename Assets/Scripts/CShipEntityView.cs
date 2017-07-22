@@ -4,6 +4,11 @@ using Ocean;
 
 public class CShipEntityView : AOceanEntityView 
 {
+    public Transform[] m_portCannonPoints;
+    public Transform[] m_portUpperCannonPoints;
+    public Transform[] m_starboardCannonPoints;
+    public Transform[] m_starboardUpperCannonPoints;
+
     public CShipEntity mu_shipEntity;
 
     bool mi_wantLerp;
@@ -46,6 +51,11 @@ public class CShipEntityView : AOceanEntityView
                 transform.position = Vector3.Lerp(mi_startPos, mi_targetPos, mi_lerpTimer);
                 transform.rotation = Quaternion.Slerp(mi_startQuaternion, mi_targetQuaternion, mi_lerpTimer);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            mu_shipEntity.pu_x += 1;
         }
     }
 }
