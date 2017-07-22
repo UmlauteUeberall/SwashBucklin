@@ -23,7 +23,7 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     void Awake()
     {
-        L.APP_NAME = "SwashBucklin";
+        //L.APP_NAME = "SwashBucklin";
         UnityHelper.LoadUnityLogger();
     }
 
@@ -32,6 +32,20 @@ public class CGameController : SingletonBehaviour<CGameController>
         mu_ocean = new COceanData();
         mu_ocean.fu_CreateOcean(2, 20, 4, 8);
         fu_CreateViews();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            mi_gameStage++;
+            List<AOceanEntity> ets = mu_ocean.fu_GetListOfType(EOceanEntityType.Ship);
+            foreach(var et in ets)
+            {
+                CShipEntity se = (CShipEntity)et;
+                //se.fu_processNextStage(mi_gameStage);
+            }
+        }
     }
 
     public void fu_CreateViews()
@@ -49,6 +63,7 @@ public class CGameController : SingletonBehaviour<CGameController>
                     prefab = mu_RockPrefab.gameObject;
                     break;
                 case EOceanEntityType.Ship:
+                Debug.Log("Ship created");
                     prefab = mu_ShipPrefab.gameObject;
                     break;
                 case EOceanEntityType.Storm:
@@ -71,6 +86,7 @@ public class CGameController : SingletonBehaviour<CGameController>
 
             pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
             tmp = Instantiate(prefab, pos, Quaternion.identity);       // TODO: Rotation
+            prefab = null;
             tmp.transform.parent = mu_OceanPlane.transform;
 
             e.mu_view = tmp.GetComponent<AOceanEntityView>();
@@ -92,13 +108,19 @@ public class CGameController : SingletonBehaviour<CGameController>
         var ets = mu_ocean.fu_GetAllEntities();
         foreach (AOceanEntity e in ets)
         {
-            if (e.pu_EntityType == EOceanEntityType.Ship || e.pu_EntityType == EOceanEntityType.Storm)
+            if (e.pu_EntityType == EOceanEntityType.Ship)
             {
-                e.fu_processNextStage(mi_gameStage);
+                //((CShipEntity)e).fu_processNextStage(mi_gameStage);
+            }
+            else if (e.pu_EntityType == EOceanEntityType.Storm)
+            {
+                //((CStormEntity)e).fu_processNextStage(mi_gameStage);
             }
         }
     }
 }
+
+public enum EMoveCommand {  STAY, FORWARD, LEFT, RIGHT }
 
 public enum EGameStage
 {

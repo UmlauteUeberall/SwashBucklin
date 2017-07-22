@@ -118,9 +118,6 @@
     <Reference Include="websocket-sharp">
       <HintPath>Assets\AirConsole\plugins\websocket-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="plib_util">
-      <HintPath>Assets\Libraries\plib_util.dll</HintPath>
-    </Reference>
     <Reference Include="plib_util_unity">
       <HintPath>Assets\Libraries\plib_util_unity.dll</HintPath>
     </Reference>

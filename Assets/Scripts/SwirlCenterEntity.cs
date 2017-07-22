@@ -17,9 +17,5 @@ namespace Ocean
         public CSwirlCenterEntity(int _x, int _y, EOrientation _orientation) : base(_x, _y, _orientation)
         {
         }
-
-        public override void fu_processNextStage(EGameStage _newStage)
-        {
-        }
     }
 }

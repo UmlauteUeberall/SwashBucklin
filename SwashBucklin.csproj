@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -76,14 +78,12 @@
     <Reference Include="websocket-sharp">
       <HintPath>Assets\AirConsole\plugins\websocket-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="plib_util">
-      <HintPath>Assets\Libraries\plib_util.dll</HintPath>
-    </Reference>
     <Reference Include="plib_util_unity">
       <HintPath>Assets\Libraries\plib_util_unity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AirConsole\examples\basic\ExampleBasicLogic.cs" />
     <Compile Include="Assets\AirConsole\examples\pong\ExamplePongLogic.cs" />
     <Compile Include="Assets\AirConsole\examples\pong\scripts\Racket.cs" />
     <Compile Include="Assets\AirConsole\extras\HighScoreHelper.cs" />
@@ -243,7 +243,6 @@
     <Compile Include="Assets\AirConsole\scripts\DebugLevel.cs" />
     <Compile Include="Assets\AirConsole\scripts\Settings.cs" />
     <Compile Include="Assets\AirConsole\scripts\WebsocketListener.cs" />
-    <Compile Include="Assets\GameJam\Scripts\GameJamLogic.cs" />
     <Compile Include="Assets\Scripts\AOceanEntityView.cs" />
     <Compile Include="Assets\Scripts\CRockEntityView.cs" />
     <Compile Include="Assets\Scripts\CShipEntityView.cs" />
@@ -256,8 +255,7 @@
     <Compile Include="Assets\Scripts\RockEntity.cs" />
     <Compile Include="Assets\Scripts\ShipEntity.cs" />
     <Compile Include="Assets\Scripts\StormEntity.cs" />
-    <Compile Include="Assets\Scripts\Stream.cs" />
-    <Compile Include="Assets\Scripts\SwirlCClockEntity.cs" />
+    <Compile Include="Assets\Scripts\StreamEntity.cs" />
     <Compile Include="Assets\Scripts\SwirlCenterEntity.cs" />
     <Compile Include="Assets\Scripts\SwirlClockEntity.cs" />
   </ItemGroup>

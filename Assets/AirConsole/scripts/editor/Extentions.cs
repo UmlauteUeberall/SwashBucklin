@@ -93,7 +93,7 @@ namespace NDream.AirConsole.Editor {
 			EditorPrefs.SetInt ("webSocketPort", Settings.webSocketPort);
 		}
 
-		public static void OpenBrowser (AirConsole controller, string startUpPath) {
+		public static void OpenBrowser (NDream.AirConsole.AirConsole controller, string startUpPath) {
 
 			// set the root path for webserver
 			webserver.SetPath (startUpPath);

@@ -82,31 +82,32 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range(0, (int)mu_xSize);
-                    y = UnityEngine.Random.Range(0, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
                 } while (fi_IsPlaceOccupiedForSwirl(x, y));
 
                 // top row
-                entity = new CSwirlCClockEntity(x - 1, y - 1, EOrientation.North);
+                entity = new CSwirlClockEntity(x - 1, y - 1, EOrientation.East);
                 mi_entityList.Add(entity);
-                entity = new CStreamEntity(x, y - 1, EOrientation.North);
+                entity = new CStreamEntity(x, y - 1, EOrientation.East);
                 mi_entityList.Add(entity);
-                entity = new CSwirlCClockEntity(x + 1, y - 1, EOrientation.East);
+                entity = new CSwirlClockEntity(x + 1, y - 1, EOrientation.South);
                 mi_entityList.Add(entity);
 
                 // center row
-                entity = new CStreamEntity(x - 1, y, EOrientation.West);
+                entity = new CStreamEntity(x - 1, y, EOrientation.North);
                 mi_entityList.Add(entity);
-                entity = new CSwirlCenterEntity(x, y, EOrientation.North);
+                entity = new CSwirlCenterEntity(x, y, EOrientation.MAX_ORIENTATION);
                 mi_entityList.Add(entity);
-                entity = new CStreamEntity(x + 1, y, EOrientation.East);
+                entity = new CStreamEntity(x + 1, y, EOrientation.South);
                 mi_entityList.Add(entity);
 
+                // bottom row
                 entity = new CSwirlClockEntity(x - 1, y + 1, EOrientation.North);
                 mi_entityList.Add(entity);
-                entity = new CStreamEntity(x, y + 1, EOrientation.South);
+                entity = new CStreamEntity(x, y + 1, EOrientation.West);
                 mi_entityList.Add(entity);
-                entity = new CSwirlClockEntity(x + 1, y + 1, EOrientation.North);
+                entity = new CSwirlClockEntity(x + 1, y + 1, EOrientation.West);
                 mi_entityList.Add(entity);
             }
 
