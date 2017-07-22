@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using System.IO;
-using UnityEditor.Build;
+//using UnityEditor.Build;
 
 namespace NDream.AirConsole.Editor {
 	public class PostBuildProcess {
@@ -36,8 +36,9 @@ namespace NDream.AirConsole.Editor {
 				EditorPrefs.SetString ("airconsolePortPath", pathToBuiltProject);
 
 
-			} else if (target == BuildTarget.Android) {
-				throw new BuildFailedException("Android Builds do not work with this plugin version! We depend on a WebView Plugin that is not supported in Unity 5.6+ yet. See https://github.com/gree/unity-webview/issues/154.");
+			}
+            else if (target == BuildTarget.Android) {
+				throw new System.Exception("Android Builds do not work with this plugin version! We depend on a WebView Plugin that is not supported in Unity 5.6+ yet. See https://github.com/gree/unity-webview/issues/154.");
 			}
 		}
 	}
