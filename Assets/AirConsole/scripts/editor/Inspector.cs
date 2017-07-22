@@ -10,7 +10,7 @@ namespace NDream.AirConsole.Editor {
 		GUIStyle styleBlack = new GUIStyle ();
 		Texture2D bg;
 		Texture logo;
-		AirConsole controller;
+		NDream.AirConsole.AirConsole controller;
 		private SerializedProperty gameId;
 		private SerializedProperty gameVersion;
 
