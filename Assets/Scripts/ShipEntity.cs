@@ -1,4 +1,5 @@
-﻿using System;
+﻿using plib.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,13 +71,46 @@ namespace Ocean
                 break;
             }
 
+            L.Log(moveCommand);
+            if (_stage > EGameStage.MOVE_4)
+                return;
+
+
+            fi_GetOffsetForOrientation(pu_orientation, out xOffset, out yOffset);
+
+            if (moveCommand != EMoveCommand.STAY)
+            {
+                List<AOceanEntity> entities = CGameController.Get.mu_ocean.fu_GetListAt(pu_x + xOffset, pu_y + yOffset);
+                foreach (var e in entities)
+                {
+                    if (e.pu_EntityType == EOceanEntityType.Ship)
+                    {
+                        fi_BumpIntoShip((CShipEntity)e);
+                        xOffset = 0;
+                        yOffset = 0;
+                    }
+                    else if (e.pu_EntityType == EOceanEntityType.Rock)
+                    {
+                        fi_BumpIntoRock();
+                        xOffset = 0;
+                        yOffset = 0;
+                    }
+                }
+
+                pu_x += xOffset; // TODO: bounds check for play field
+                pu_y += yOffset;
+            }
+
+            if (moveCommand != EMoveCommand.LEFT && moveCommand != EMoveCommand.RIGHT)
+                return;
+
             switch (moveCommand)
             {
                 case EMoveCommand.LEFT:
-                    pu_orientation += (int)EOrientation.MAX_ORIENTATION - 1;
+                pu_orientation += (int)EOrientation.MAX_ORIENTATION - 1;
                 break;
                 case EMoveCommand.RIGHT:
-                    pu_orientation += 1;
+                pu_orientation += 1;
                 break;
             }
 
@@ -84,8 +118,8 @@ namespace Ocean
 
             fi_GetOffsetForOrientation(pu_orientation, out xOffset, out yOffset);
 
-            List<AOceanEntity> entities = CGameController.Get.mu_ocean.fu_GetListAt(pu_x + xOffset, pu_y + yOffset);
-            foreach(var e in entities)
+            List<AOceanEntity> entities2 = CGameController.Get.mu_ocean.fu_GetListAt(pu_x + xOffset, pu_y + yOffset);
+            foreach (var e in entities2)
             {
                 if (e.pu_EntityType == EOceanEntityType.Ship)
                 {
@@ -228,7 +262,6 @@ namespace Ocean
 
         public void fu_Kill()
         {
-
             throw new NotImplementedException();
         }
 

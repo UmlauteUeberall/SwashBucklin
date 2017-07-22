@@ -16,7 +16,8 @@ public class CGameController : SingletonBehaviour<CGameController>
     public CShipEntityView mu_ShipPrefab;
     public CSwirlEntityView mu_SwirlPrefab;
     public CStormEntityView mu_StormPrefab;
-    public CStreamEntityView mu_SteamPrefab;
+    public CStreamEntityView mu_StreamPrefab;
+    public AOceanEntityView mu_OceanPrefab;
 
     public int pu_Round { get { return mi_round; } }
     public EGameStage pu_GameStage { get { return mi_gameStage; } }
@@ -62,6 +63,27 @@ public class CGameController : SingletonBehaviour<CGameController>
                             && mu_PlayerDict.Values.All(_o => _o.pu_isReady != 0)))
         {
             fu_ProcessNextStage();
+
+
+            if (mi_gameStage == EGameStage.SELECTION_PHASE)
+            {
+                foreach (CPlayer p in mu_PlayerDict.Values)
+                {
+                    p.pu_movement1LeftMode = 0;
+                    p.pu_movement1Mode = 0;
+                    p.pu_movement1RightMode = 0;
+                    p.pu_movement2LeftMode = 0;
+                    p.pu_movement2Mode = 0;
+                    p.pu_movement2RightMode = 0;
+                    p.pu_movement3LeftMode = 0;
+                    p.pu_movement3Mode = 0;
+                    p.pu_movement3RightMode = 0;
+                    p.pu_movement4LeftMode = 0;
+                    p.pu_movement4Mode = 0;
+                    p.pu_movement4RightMode = 0;
+                    p.fu_UpdateClient();
+                }
+            }
         }
     }
 
@@ -79,7 +101,7 @@ public class CGameController : SingletonBehaviour<CGameController>
 
         if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 1) // TODO: set to min players
+            if (AirConsole.instance.GetControllerDeviceIds().Count >= 2) // TODO: set to min players
             {
                 AirConsole.instance.SetActivePlayers(8);
 
@@ -98,7 +120,7 @@ public class CGameController : SingletonBehaviour<CGameController>
         if (mu_PlayerDict.ContainsKey(device_id))
         {
             mu_ocean.fu_GetListOfType(EOceanEntityType.Ship).Cast<CShipEntity>().
-                FirstOrDefault(_o => _o.pu_OwnerId == device_id).
+                FirstOrDefault(_o => _o.mu_deviceId == device_id).
                 fu_Kill();
             mu_PlayerDict.Remove(device_id);
         }
@@ -137,46 +159,98 @@ public class CGameController : SingletonBehaviour<CGameController>
         GameObject tmp;
         GameObject prefab = null;
         Vector3 pos = Vector3.zero;
-        foreach (AOceanEntity e in ets)
+        for (int y = 0; y < 25; y++)
         {
-            switch (e.pu_EntityType)
+            for (int x = 0; x < 25; x++)
             {
-                case EOceanEntityType.Rock:
-                    prefab = mu_RockPrefab.gameObject;
-                    break;
-                case EOceanEntityType.Ship:
-                    L.Log("Ship created");
-                    prefab = mu_ShipPrefab.gameObject;
-                    break;
-                case EOceanEntityType.Storm:
-                    prefab = mu_StormPrefab.gameObject;
-                    break;
-                case EOceanEntityType.SwirlCenter:
-                    prefab = mu_SwirlPrefab.gameObject;
-                    break;
-                case EOceanEntityType.Stream:
-                    prefab = mu_SteamPrefab.gameObject;
-                    break;
-                default:
-                    break;
-            }
+                List<AOceanEntity> entityList = mu_ocean.fu_GetListAt(x, y);
+                foreach (var e in entityList)
+                {
+                    prefab = mu_OceanPrefab.gameObject;
+                    pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
+                    Quaternion q = new Quaternion();
+                    q.eulerAngles = new Vector3(0, ((int)e.pu_orientation) * 90, 0);
 
-            if (prefab == null)
-            {
-                continue;
-            }
+                    switch (e.pu_EntityType)
+                    {
+                        case EOceanEntityType.Rock:
+                        tmp = Instantiate(prefab, pos, q); // standard ocean
+                        tmp.name += "_" + x + "_" + y;
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        prefab = mu_RockPrefab.gameObject;
+                        tmp = Instantiate(prefab, pos, q);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        break;
+                        case EOceanEntityType.Ship:
+                        tmp = Instantiate(prefab, pos, q); // standard ocean
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        tmp.name += "_" + x + "_" + y;
+                        prefab = mu_ShipPrefab.gameObject;
+                        tmp = Instantiate(prefab, pos, q);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        break;
+                        case EOceanEntityType.Storm:
+                        tmp = Instantiate(prefab, pos, q); // standard ocean
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        tmp.name += "_" + x + "_" + y;
+                        prefab = mu_StormPrefab.gameObject;
+                        tmp = Instantiate(prefab, pos, q);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        break;
+                        case EOceanEntityType.SwirlCenter:
+                        prefab = mu_SwirlPrefab.gameObject;
+                        tmp = Instantiate(prefab, pos, q);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        break;
+                        case EOceanEntityType.Stream:
+                        prefab = mu_StreamPrefab.gameObject;
+                        tmp = Instantiate(prefab, pos, q);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+                        break;
+                        default:
+                        tmp = null;
+                        break;
+                    }
 
-            pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
-            tmp = Instantiate(prefab, pos, Quaternion.identity);       // TODO: Rotation
-            prefab = null;
-            tmp.transform.parent = mu_OceanPlane.transform;
-
-            e.mu_view = tmp.GetComponent<AOceanEntityView>();
-            if (e.pu_EntityType == EOceanEntityType.Ship)
-            {
-                ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
+                    if (tmp != null)
+                    {
+                        e.mu_view = tmp.GetComponent<AOceanEntityView>();
+                        if (e.pu_EntityType == EOceanEntityType.Ship)
+                        {
+                            ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
+                        }
+                    }
+                }
             }
         }
+        return;
+
+        // now remove all water around swirl center
+        //         var list = mu_OceanPlane.transform.GetOnlyChildren().Where(_o => _o.name.StartsWith(mu_OceanPrefab.name)).ToLinkedList();
+        // 
+        //         List<AOceanEntity> entities = mu_ocean.fu_GetListOfType(EOceanEntityType.SwirlCenter);
+        //         string goName;
+        //         Transform t;
+        //         foreach (var e in entities)
+        //         {
+        //             for (int y = -1; y < 2; y++)
+        //             {
+        //                 for (int x = -1; x < 2; x++)
+        //                 {
+        //                     if (x == 0 && y == 0)
+        //                         continue;
+        // 
+        //                     goName = "_" + (e.pu_x+x) + "_" + (e.pu_y + y);
+        // 
+        //                     t = list.FirstOrDefault(_o => _o.name.EndsWith(goName));
+        //                     if (t != null)
+        //                     {
+        //                         list.Remove(t);
+        //                         Destroy(t.gameObject);
+        //                     }
+        //                 }
+        //             }
+        //         }
     }
 
     public void fu_ProcessNextStage()
@@ -189,36 +263,30 @@ public class CGameController : SingletonBehaviour<CGameController>
             mi_round++;
             mi_gameStageTimer = 60.0f;
 
-            mu_PlayerDict.Values.ForEach(_o =>
-            {
-                _o.pu_gameState = 0;
-                _o.fu_UpdateClient();
-            });
-
             int rnd;
             foreach (var p in mu_PlayerDict.Values)
             {
                 rnd = Random.Range(4, 7);
-                for (int i = rnd; i > 0; i++)
+                for (int i = rnd; i > 0; i--)
                 {
                     rnd = Random.Range(0, 5);
                     switch (rnd)
                     {
                         case 0:
-                            p.pu_tokenGunAmount = Mathf.Min(1 + p.pu_tokenGunAmount, CPlayer.pu_tokenGunMax);
-                            break;
+                        p.pu_tokenGunAmount = Mathf.Min(1 + p.pu_tokenGunAmount, CPlayer.pu_tokenGunMax);
+                        break;
                         case 1:
-                            p.pu_tokenHookAmount = Mathf.Min(1 + p.pu_tokenHookAmount, CPlayer.pu_tokenHookMax);
-                            break;
+                        p.pu_tokenHookAmount = Mathf.Min(1 + p.pu_tokenHookAmount, CPlayer.pu_tokenHookMax);
+                        break;
                         case 2:
-                            p.pu_tokenLeftAmount = Mathf.Min(1 + p.pu_tokenLeftAmount, CPlayer.pu_tokenLeftMax);
-                            break;
+                        p.pu_tokenLeftAmount = Mathf.Min(1 + p.pu_tokenLeftAmount, CPlayer.pu_tokenLeftMax);
+                        break;
                         case 3:
-                            p.pu_tokenRightAmount = Mathf.Min(1 + p.pu_tokenRightAmount, CPlayer.pu_tokenRightMax);
-                            break;
+                        p.pu_tokenRightAmount = Mathf.Min(1 + p.pu_tokenRightAmount, CPlayer.pu_tokenRightMax);
+                        break;
                         case 4:
-                            p.pu_tokenStraightAmount = Mathf.Min(1 + p.pu_tokenStraightAmount, CPlayer.pu_tokenStraightMax);
-                            break;
+                        p.pu_tokenStraightAmount = Mathf.Min(1 + p.pu_tokenStraightAmount, CPlayer.pu_tokenStraightMax);
+                        break;
                     }
                 }
             }
@@ -240,30 +308,34 @@ public class CGameController : SingletonBehaviour<CGameController>
         mi_gameStage = (EGameStage)gs;
 
         var ets = mu_ocean.fu_GetListOfType(EOceanEntityType.Ship);
-        foreach (CShipEntity e in ets.Randomize())      // Lazy as fuck
+        if (mi_gameStage != EGameStage.SELECTION_PHASE)
         {
-            e.fu_ProcessStreamsAndSwirls();
-        }
-        foreach (CShipEntity e in ets.Randomize())
-        {
-            e.fu_ProcessMove(mi_gameStage);
-        }
-        foreach (CShipEntity e in ets.Randomize())
-        {
-            e.fu_ProcessHooks(mi_gameStage);
-        }
-        foreach (CShipEntity e in ets.Randomize())
-        {
-            e.fu_ProcessCannons(mi_gameStage);
-        }
-
-        foreach (CShipEntity e in ets.Randomize())
-        {
-            if (e.fu_KillCheck())
+            foreach (CShipEntity e in ets.Randomize())      // Lazy as fuck
             {
-                e.fu_Kill();
+                //e.fu_ProcessStreamsAndSwirls();
+            }
+            foreach (CShipEntity e in ets.Randomize())
+            {
+                e.fu_ProcessMove(mi_gameStage);
+            }
+            foreach (CShipEntity e in ets.Randomize())
+            {
+                //e.fu_ProcessHooks(mi_gameStage);
+            }
+            foreach (CShipEntity e in ets.Randomize())
+            {
+                //e.fu_ProcessCannons(mi_gameStage);
+            }
+            foreach (CShipEntity e in ets.Randomize())
+            {
+    //             if (e.fu_KillCheck())
+    //             {
+    //                 e.fu_Kill();
+    //             }
             }
         }
+
+
     }
 }
 

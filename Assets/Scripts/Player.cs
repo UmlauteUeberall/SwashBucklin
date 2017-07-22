@@ -800,6 +800,8 @@ namespace Ocean
             PressedButton = int.Parse(msgs[0]);
             ButtonParameter = int.Parse(msgs[1]);
 
+            plib.Util.L.Log(PressedButton + " " + ButtonParameter);
+
             // Handle what comes from the Client!
             HandleClientMessage(PressedButton, ButtonParameter);
 

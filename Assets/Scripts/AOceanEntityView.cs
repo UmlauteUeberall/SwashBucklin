@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class AOceanEntityView : MonoBehaviour 
+public class AOceanEntityView : MonoBehaviour 
 {
 
 }

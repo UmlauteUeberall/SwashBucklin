@@ -26,6 +26,8 @@ public class CShipEntityView : AOceanEntityView
 	// Update is called once per frame
 	void Update () 
 	{
+        
+
         if (!mi_wantLerp)
         {
             mi_targetPos = new Vector3(mu_shipEntity.pu_x, 0f, mu_shipEntity.pu_y) * CGameController.Get.mu_ocean.mu_cellSize;
@@ -53,32 +55,32 @@ public class CShipEntityView : AOceanEntityView
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
-            if (player != null)
-            {
-                player.pu_movement1Mode = 1;
-                mu_shipEntity.fu_ProcessMove(0);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
-            if (player != null)
-            {
-                player.pu_movement1Mode = 2;
-                mu_shipEntity.fu_ProcessMove(0);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
-            if (player != null)
-            {
-                player.pu_movement1Mode = 3;
-                mu_shipEntity.fu_ProcessMove(0);
-            }
-        }
+//         if (Input.GetKeyDown(KeyCode.W))
+//         {
+//             CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+//             if (player != null)
+//             {
+//                 player.pu_movement1Mode = 1;
+//                 mu_shipEntity.fu_ProcessMove(0);
+//             }
+//         }
+//         else if (Input.GetKeyDown(KeyCode.Q))
+//         {
+//             CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+//             if (player != null)
+//             {
+//                 player.pu_movement1Mode = 2;
+//                 mu_shipEntity.fu_ProcessMove(0);
+//             }
+//         }
+//         else if (Input.GetKeyDown(KeyCode.E))
+//         {
+//             CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+//             if (player != null)
+//             {
+//                 player.pu_movement1Mode = 3;
+//                 mu_shipEntity.fu_ProcessMove(0);
+//             }
+//         }
     }
 }
