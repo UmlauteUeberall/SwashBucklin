@@ -53,9 +53,32 @@ public class CShipEntityView : AOceanEntityView
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            mu_shipEntity.pu_x += 1;
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+            if (player != null)
+            {
+                player.pu_movement1Mode = 1;
+                mu_shipEntity.fu_ProcessMove(0);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+            if (player != null)
+            {
+                player.pu_movement1Mode = 2;
+                mu_shipEntity.fu_ProcessMove(0);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            CPlayer player = CGameController.Get.mu_PlayerDict[mu_shipEntity.mu_deviceId];
+            if (player != null)
+            {
+                player.pu_movement1Mode = 3;
+                mu_shipEntity.fu_ProcessMove(0);
+            }
         }
     }
 }
