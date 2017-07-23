@@ -41,14 +41,20 @@ public class CameraController : MonoBehaviour
 
     void fi_AutoPositionCamera()
     {
-        float maxDistance = 0.0f;
-        Vector3 center = fi_CalcCenterBetweenShips(out maxDistance);
+        //         float maxDistance = 0.0f;
+        //         Vector3 center = fi_CalcCenterBetweenShips(out maxDistance);
+        //         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        //         transform.LookAt(center);
+        // 
+        //         transform.position = center - transform.forward * maxDistance * 1.2f;
+        //         transform.position = new Vector3(transform.position.x, height, transform.position.z);
+        //         transform.RotateAround(center, Vector3.up, Time.deltaTime * mu_rotateAngleSpeed);
+        //         transform.LookAt(center);
+        Vector3 center = new Vector3(
+            (CGameController.Get.mu_ocean.mu_xSize * CGameController.Get.mu_ocean.mu_cellSize)/2,
+            0.0f,
+            (CGameController.Get.mu_ocean.mu_ySize * CGameController.Get.mu_ocean.mu_cellSize) / 2);
         transform.RotateAround(center, Vector3.up, Time.deltaTime * mu_rotateAngleSpeed);
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        transform.LookAt(center);
-
-        transform.position = center - transform.forward * maxDistance * 20;
-        transform.position = new Vector3(transform.position.x, height, transform.position.z);
         transform.LookAt(center);
     }
 

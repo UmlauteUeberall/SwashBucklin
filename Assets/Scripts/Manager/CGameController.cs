@@ -66,7 +66,10 @@ public class CGameController : SingletonBehaviour<CGameController>
     private void Update()
     {
         mi_gameStageTimer -= Time.deltaTime;
-        mu_uiManager.SetTimerDisplay(mi_gameStageTimer);
+        if (mi_gameStage != EGameStage.SELECTION_PHASE)
+            mu_uiManager.SetTimerDisplay(mi_gameStageTimer);
+        else
+            mu_uiManager.SetTimerDisplay(0);
 
         if (mi_gameStageTimer <= 0.0f ||
                             (mi_gameStage == EGameStage.SELECTION_PHASE && mu_PlayerDict.Count > 0
@@ -112,7 +115,7 @@ public class CGameController : SingletonBehaviour<CGameController>
             {
                 AirConsole.instance.SetActivePlayers(8);
 
-                mu_ocean.fu_CreateOcean(20, 4, 8);
+                mu_ocean.fu_CreateOcean(7, 2, 0);
                 fu_CreateViews();
 
                 mu_uiManager.SetStage(UIStage.HUD);
@@ -171,9 +174,9 @@ public class CGameController : SingletonBehaviour<CGameController>
         GameObject tmp = null;
         GameObject prefab = null;
         Vector3 pos = Vector3.zero;
-        for (int y = 0; y < 25; y++)
+        for (int y = 0; y < mu_ocean.mu_ySize; y++)
         {
-            for (int x = 0; x < 25; x++)
+            for (int x = 0; x < mu_ocean.mu_xSize; x++)
             {
                 List<AOceanEntity> entityList = mu_ocean.fu_GetListAt(x, y);
                 bool wantOcean = true;
@@ -232,7 +235,7 @@ public class CGameController : SingletonBehaviour<CGameController>
                         if (e.pu_EntityType == EOceanEntityType.Ship)
                         {
                             ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
-                            ((CShipEntityView)e.mu_view).mu_sailRenderer.material.color = Color.green;
+                            ((CShipEntityView)e.mu_view).mu_sailRenderer.material.color = fi_FetchColor();
                         }
                     }
                 }
@@ -337,7 +340,7 @@ public class CGameController : SingletonBehaviour<CGameController>
         {
             foreach (CShipEntity e in ets.Randomize())      // Lazy as fuck
             {
-                //e.fu_ProcessStreamsAndSwirls();
+                e.fu_ProcessStreamsAndSwirls();
             }
             foreach (CShipEntity e in ets.Randomize())
             {
@@ -345,11 +348,11 @@ public class CGameController : SingletonBehaviour<CGameController>
             }
             foreach (CShipEntity e in ets.Randomize())
             {
-                //e.fu_ProcessHooks(mi_gameStage);
+                e.fu_ProcessHooks(mi_gameStage);
             }
             foreach (CShipEntity e in ets.Randomize())
             {
-                //e.fu_ProcessCannons(mi_gameStage);
+                e.fu_ProcessCannons(mi_gameStage);
             }
             foreach (CShipEntity e in ets.Randomize())
             {
@@ -359,8 +362,27 @@ public class CGameController : SingletonBehaviour<CGameController>
     //             }
             }
         }
+    }
 
+    private int cc = 0;
 
+    Color fi_FetchColor()
+    {
+        Color cr;
+        if (cc == 0)
+            cr = Color.white;
+        else if (cc == 1)
+            cr = Color.red;
+        else if (cc == 2)
+            cr = Color.black;
+        else if (cc == 3)
+            cr = Color.green;
+        else if (cc == 4)
+            cr = Color.blue;
+        else
+            cr = Color.gray;
+        cc++;
+        return cr;
     }
 }
 

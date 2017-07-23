@@ -213,6 +213,7 @@ namespace Ocean
         /// </summary>
         public void fu_ProcessCannons(EGameStage _moveStep)
         {
+            Debug.Log("in processCannons");
             CPlayer player = CGameController.Get.mu_PlayerDict[mu_deviceId];
             bool portCannon = false;
             bool starboardCannon = false;
@@ -220,30 +221,31 @@ namespace Ocean
             {
                 case EGameStage.MOVE_1:
                 {
-                    portCannon = player.pu_movement1LeftMode == 1;
+                    portCannon = player.pu_movement1LeftMode == 2;
                     starboardCannon = player.pu_movement1RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_2:
                 {
-                    portCannon = player.pu_movement2LeftMode == 1;
+                    portCannon = player.pu_movement2LeftMode == 2;
                     starboardCannon = player.pu_movement2RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_3:
                 {
-                    portCannon = player.pu_movement3LeftMode == 1;
+                    portCannon = player.pu_movement3LeftMode == 2;
                     starboardCannon = player.pu_movement3RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_4:
                 {
-                    portCannon = player.pu_movement4LeftMode == 1;
+                    portCannon = player.pu_movement4LeftMode == 2;
                     starboardCannon = player.pu_movement4RightMode == 2;
                 }
                 break;
             }
 
+            Debug.Log("port = " + portCannon.ToString() + " starboard = "+ starboardCannon.ToString());
             int xStep = 0;
             int yStep = 0;
             if (starboardCannon)
@@ -258,7 +260,8 @@ namespace Ocean
                 fi_GetOffsetForOrientation(or, out xStep, out yStep);
                 fi_TryShootEnemyShip(xStep, yStep, 3);
             }
-            ((CShipEntityView)mu_view).fu_FireCannons(portCannon, starboardCannon);
+//            ((CShipEntityView)mu_view).fu_FireCannons(portCannon, starboardCannon);
+            ((CShipEntityView)mu_view).fu_FireCannons(true, true);
         }
 
         public void fu_Kill()

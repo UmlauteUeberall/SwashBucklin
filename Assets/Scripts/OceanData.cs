@@ -9,8 +9,8 @@ namespace Ocean
 
     public class COceanData
     {
-        public uint mu_xSize = 25;
-        public uint mu_ySize = 25;
+        public uint mu_xSize = 10;
+        public uint mu_ySize = 10;
 
         public float mu_cellSize = 20.0f;
 
