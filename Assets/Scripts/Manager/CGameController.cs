@@ -94,14 +94,11 @@ public class CGameController : SingletonBehaviour<CGameController>
 
     void OnConnect(int device_id)
     {
-        if (AirConsole.instance.GetControllerDeviceIds().Count < 8)
-        {
-            mu_PlayerDict.Add(device_id, new CPlayer(device_id));
-        }
+        mu_PlayerDict.Add(device_id, new CPlayer(device_id));
 
         if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 2) // TODO: set to min players
+            if (AirConsole.instance.GetControllerDeviceIds().Count >= 1) // TODO: set to min players
             {
                 AirConsole.instance.SetActivePlayers(8);
 
@@ -156,7 +153,7 @@ public class CGameController : SingletonBehaviour<CGameController>
     {
         List<AOceanEntity> ets = mu_ocean.fu_GetAllEntities();
 
-        GameObject tmp;
+        GameObject tmp = null;
         GameObject prefab = null;
         Vector3 pos = Vector3.zero;
         for (int y = 0; y < 25; y++)
@@ -164,62 +161,74 @@ public class CGameController : SingletonBehaviour<CGameController>
             for (int x = 0; x < 25; x++)
             {
                 List<AOceanEntity> entityList = mu_ocean.fu_GetListAt(x, y);
+                bool wantOcean = true;
+
                 foreach (var e in entityList)
                 {
-                    prefab = mu_OceanPrefab.gameObject;
-                    pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
-                    Quaternion q = new Quaternion();
-                    q.eulerAngles = new Vector3(0, ((int)e.pu_orientation) * 90, 0);
-
                     switch (e.pu_EntityType)
                     {
                         case EOceanEntityType.Rock:
-                        tmp = Instantiate(prefab, pos, q); // standard ocean
-                        tmp.name += "_" + x + "_" + y;
-                        tmp.transform.parent = mu_OceanPlane.transform;
-                        prefab = mu_RockPrefab.gameObject;
-                        tmp = Instantiate(prefab, pos, q);
-                        tmp.transform.parent = mu_OceanPlane.transform;
+                        {
+                            tmp = Instantiate(mu_RockPrefab.gameObject);
+                        }
                         break;
                         case EOceanEntityType.Ship:
-                        tmp = Instantiate(prefab, pos, q); // standard ocean
-                        tmp.transform.parent = mu_OceanPlane.transform;
-                        tmp.name += "_" + x + "_" + y;
-                        prefab = mu_ShipPrefab.gameObject;
-                        tmp = Instantiate(prefab, pos, q);
-                        tmp.transform.parent = mu_OceanPlane.transform;
+                        {
+                            tmp = Instantiate(mu_ShipPrefab.gameObject);
+                            L.Log("instantiate ship model at (" + x + ", " + y + ")");
+                        }
                         break;
                         case EOceanEntityType.Storm:
-                        tmp = Instantiate(prefab, pos, q); // standard ocean
-                        tmp.transform.parent = mu_OceanPlane.transform;
-                        tmp.name += "_" + x + "_" + y;
-                        prefab = mu_StormPrefab.gameObject;
-                        tmp = Instantiate(prefab, pos, q);
-                        tmp.transform.parent = mu_OceanPlane.transform;
+                        {
+                            tmp = Instantiate(mu_StormPrefab.gameObject);
+                        }
                         break;
                         case EOceanEntityType.SwirlCenter:
-                        prefab = mu_SwirlPrefab.gameObject;
-                        tmp = Instantiate(prefab, pos, q);
-                        tmp.transform.parent = mu_OceanPlane.transform;
+                        {
+                            wantOcean = false;
+                            tmp = Instantiate(mu_SwirlPrefab.gameObject);
+                        }
                         break;
                         case EOceanEntityType.Stream:
-                        prefab = mu_StreamPrefab.gameObject;
-                        tmp = Instantiate(prefab, pos, q);
-                        tmp.transform.parent = mu_OceanPlane.transform;
+                        {
+                            wantOcean = false;
+                            tmp = Instantiate(mu_StreamPrefab.gameObject);
+                        }
                         break;
+
+                        case EOceanEntityType.SwirlClock:
+                            wantOcean = false;
+                            tmp = null;
+                        break;
+
                         default:
-                        tmp = null;
+                            tmp = null;
                         break;
                     }
 
                     if (tmp != null)
                     {
+                        pos = new Vector3(e.pu_x, 0f, e.pu_y) * mu_ocean.mu_cellSize;
+                        tmp.transform.position = pos;
+                        tmp.transform.eulerAngles = new Vector3(0, ((int)e.pu_orientation) * 90, 0);
+                        tmp.transform.parent = mu_OceanPlane.transform;
+
                         e.mu_view = tmp.GetComponent<AOceanEntityView>();
                         if (e.pu_EntityType == EOceanEntityType.Ship)
                         {
                             ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
                         }
                     }
+                }
+
+                if (wantOcean)
+                {
+                    pos = new Vector3(x, 0f, y) * mu_ocean.mu_cellSize;
+
+                    tmp = Instantiate(mu_OceanPrefab.gameObject); // standard ocean
+                    tmp.name += "_" + x + "_" + y;
+                    tmp.transform.position = pos;
+                    tmp.transform.parent = mu_OceanPlane.transform;
                 }
             }
         }

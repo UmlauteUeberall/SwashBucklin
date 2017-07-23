@@ -258,11 +258,12 @@ namespace Ocean
                 fi_GetOffsetForOrientation(or, out xStep, out yStep);
                 fi_TryShootEnemyShip(xStep, yStep, 3);
             }
+            ((CShipEntityView)mu_view).fu_FireCannons(portCannon, starboardCannon);
         }
 
         public void fu_Kill()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public bool fu_KillCheck()

@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Custom/WaterTest" 
 {
@@ -64,7 +66,7 @@ Shader "Custom/WaterTest"
 				VertexOut o;
 
 				float3 pos = mul(unity_ObjectToWorld, _in.vertex);
-				o.vertex = mul(UNITY_MATRIX_MVP, _in.vertex);
+				o.vertex = UnityObjectToClipPos(_in.vertex);
 				o.uv = pos.xz * _MainTex_ST.xy + _MainTex_ST.zw;
 				o.uv2 = pos.xz * _SecondWaveTex_ST.xy + _SecondWaveTex_ST.zw;
 				//o.vertex.y -= (_Amount1 * (tex2Dlod(_MainTex, float4(o.uv, 1, 1)) - 0.5)

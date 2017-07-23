@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using plib.Util;
@@ -10,8 +9,8 @@ namespace Ocean
 
     public class COceanData
     {
-        public uint mu_xSize = 20;
-        public uint mu_ySize = 20;
+        public uint mu_xSize = 25;
+        public uint mu_ySize = 25;
 
         public float mu_cellSize = 20.0f;
 
@@ -45,7 +44,7 @@ namespace Ocean
         public void fu_CreateOcean(int _numRocks, int _numSwirls, int _numStreams)
         {
             // first, distribute some rocks
-            UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+            UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
             AOceanEntity entity = null;
             int x;
             int y;
@@ -55,8 +54,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
-                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)0, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
                 entity = new CRockEntity(x, y, EOrientation.North);
                 mi_entityList.Add(entity);
@@ -65,10 +64,12 @@ namespace Ocean
             // make ships
             foreach(var kvp in CGameController.Get.mu_PlayerDict)
             {
+                Debug.Log("Creating Ship!");
+
                 do
                 {
-                    x = UnityEngine.Random.Range((int)mu_xSize, (int)mu_xSize);
-                    y = UnityEngine.Random.Range((int)mu_ySize, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)0, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
 
                 EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);
@@ -76,6 +77,8 @@ namespace Ocean
                 int deviceId = kvp.Key;
                 entity = new CShipEntity(x, y, or, deviceId);
                 mi_entityList.Add(entity);
+
+                Debug.Log("Ship " + entity.ToString() + " created!");
             }
 
             // make swirls
@@ -83,8 +86,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
-                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)0, (int)mu_ySize);
                 } while (fi_IsPlaceOccupiedForSwirl(x, y));
 
                 // top row
@@ -117,8 +120,8 @@ namespace Ocean
             {
                 do
                 {
-                    x = UnityEngine.Random.Range((int)-mu_xSize, (int)mu_xSize);
-                    y = UnityEngine.Random.Range((int)-mu_ySize, (int)mu_ySize);
+                    x = UnityEngine.Random.Range((int)0, (int)mu_xSize);
+                    y = UnityEngine.Random.Range((int)0, (int)mu_ySize);
                 } while (fu_IsPlaceOccupied(x, y));
 
                 EOrientation or = (EOrientation)UnityEngine.Random.Range(0, (int)EOrientation.MAX_ORIENTATION);
