@@ -11,6 +11,7 @@ public class CShipEntityView : AOceanEntityView
     public ParticleSystem m_cannonEffect;
 
     public CShipEntity mu_shipEntity;
+    public Renderer mu_sailRenderer;
 
     private Animator mi_Animator;
 
@@ -26,12 +27,14 @@ public class CShipEntityView : AOceanEntityView
     bool mi_firePortCannons;
     bool mi_fireStarCannons;
     int mi_IsMovingAnimHash;
+    CameraController mi_CamController;
 
     // Use this for initialization
     void Awake () 
 	{
         mi_Animator = GetComponent<Animator>();
         mi_IsMovingAnimHash = Animator.StringToHash("IsMoving");
+        mi_CamController = Camera.main.GetComponent<CameraController>();
 	}
 	
 	// Update is called once per frame
@@ -65,8 +68,13 @@ public class CShipEntityView : AOceanEntityView
                 transform.rotation = Quaternion.Slerp(mi_startQuaternion, mi_targetQuaternion, mi_lerpTimer);
             }
         }
-        if (mi_firePortCannons)
+        if (mi_fireStarCannons)
         {
+            mi_CamController.fu_GrabCamera(transform, transform.position + transform.forward * 2 + transform.right);
+        }
+        else if (mi_firePortCannons)
+        {
+            mi_CamController.fu_GrabCamera(transform, transform.position + transform.forward * 2 + transform.right * -1);
         }
     }
 

@@ -144,6 +144,7 @@
     <Compile Include="Assets\AirConsole\scripts\editor\PostBuildProcess.cs" />
     <Compile Include="Assets\AirConsole\scripts\editor\SettingWindow.cs" />
     <Compile Include="Assets\AirConsole\scripts\editor\WebListener.cs" />
+    <Compile Include="Assets\Editor\MeshSaverEditor.cs" />
     <Compile Include="Assets\Editor\PlaneCreator.cs" />
   </ItemGroup>
   <ItemGroup>

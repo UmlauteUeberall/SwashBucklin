@@ -101,6 +101,7 @@ public class PlaneCreator : EditorWindow
         renderer.material = m_PlaneMat;
         col.sharedMesh = mesh;
 
+
         go.AddComponent<WaterController>();
     }
 

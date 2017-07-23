@@ -217,6 +217,7 @@ public class CGameController : SingletonBehaviour<CGameController>
                         if (e.pu_EntityType == EOceanEntityType.Ship)
                         {
                             ((CShipEntityView)e.mu_view).mu_shipEntity = (CShipEntity)e;
+                            ((CShipEntityView)e.mu_view).mu_sailRenderer.material.color = Color.green;
                         }
                     }
                 }
