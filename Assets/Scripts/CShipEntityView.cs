@@ -86,7 +86,7 @@ public class CShipEntityView : AOceanEntityView
         {
             mi_cannonTimer = 0.0f;
             mi_CannonIndex = 0;
-
+            Debug.Log("firing...");
             for (int i = 0; _firePort && i < m_portCannonPoints.Length; i++)
             {
                 ParticleSystem effect = Instantiate(m_cannonEffect, m_portCannonPoints[i]);
