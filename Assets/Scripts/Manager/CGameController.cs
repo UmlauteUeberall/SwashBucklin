@@ -66,7 +66,7 @@ public class CGameController : SingletonBehaviour<CGameController>
     private void Update()
     {
         mi_gameStageTimer -= Time.deltaTime;
-        if (mi_gameStage != EGameStage.SELECTION_PHASE)
+        if (mi_gameStage == EGameStage.SELECTION_PHASE)
             mu_uiManager.SetTimerDisplay(mi_gameStageTimer);
         else
             mu_uiManager.SetTimerDisplay(0);

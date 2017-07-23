@@ -9,6 +9,7 @@ public class CShipEntityView : AOceanEntityView
     public Transform[] m_starboardCannonPoints;
     public Transform[] m_starboardUpperCannonPoints;
     public ParticleSystem m_cannonEffect;
+    public AudioClip[] m_cannonSounds;
 
     public CShipEntity mu_shipEntity;
     public Renderer mu_sailRenderer;
@@ -28,6 +29,7 @@ public class CShipEntityView : AOceanEntityView
     bool mi_fireStarCannons;
     int mi_IsMovingAnimHash;
     CameraController mi_CamController;
+    AudioSource mi_AudioSource;
 
     // Use this for initialization
     void Awake () 
@@ -35,6 +37,11 @@ public class CShipEntityView : AOceanEntityView
         mi_Animator = GetComponent<Animator>();
         mi_IsMovingAnimHash = Animator.StringToHash("IsMoving");
         mi_CamController = Camera.main.GetComponent<CameraController>();
+        mi_AudioSource = GetComponent<AudioSource>();
+        if (mi_AudioSource == null)
+        {
+            Debug.LogError("no audio source detected!");
+        }
 	}
 	
 	// Update is called once per frame
@@ -86,12 +93,16 @@ public class CShipEntityView : AOceanEntityView
         {
             mi_cannonTimer = 0.0f;
             mi_CannonIndex = 0;
-            Debug.Log("firing...");
+
             for (int i = 0; _firePort && i < m_portCannonPoints.Length; i++)
             {
                 ParticleSystem effect = Instantiate(m_cannonEffect, m_portCannonPoints[i]);
                 effect.startDelay = Random.Range(0.0f, 0.3f) + i * 0.02f;
                 effect.Play(true);
+
+                mi_AudioSource.clip = m_cannonSounds[0];
+                mi_AudioSource.Play((ulong)(effect.startDelay * 1000));
+
                 if (i == 2 || i == 3)
                 {
                     effect = Instantiate(m_cannonEffect, m_portUpperCannonPoints[i == 1 ? 0 : 1]);
