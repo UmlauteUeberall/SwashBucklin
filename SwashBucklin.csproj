@@ -264,6 +264,7 @@
     <Compile Include="Assets\Scripts\StreamEntity.cs" />
     <Compile Include="Assets\Scripts\SwirlCenterEntity.cs" />
     <Compile Include="Assets\Scripts\SwirlClockEntity.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\Scripts\WaterController.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,7 @@ public class CGameController : SingletonBehaviour<CGameController>
     private EGameStage mi_gameStage = EGameStage.SELECTION_PHASE;
     //private EGameSubStage mi_subStage;
     private float mi_gameStageTimer;
+    UIManager mu_uiManager;
 
     void Awake()
     {
@@ -38,6 +39,14 @@ public class CGameController : SingletonBehaviour<CGameController>
             AirConsole.instance.onMessage += OnMessage;
             AirConsole.instance.onConnect += OnConnect;
             AirConsole.instance.onDisconnect += OnDisconnect;
+        }
+
+        Canvas[] cArray = FindObjectsOfType<Canvas>();
+        foreach (var c in cArray)
+        {
+            mu_uiManager = c.GetComponent<UIManager>();
+            if (mu_uiManager != null)
+                break;
         }
     }
 
@@ -57,13 +66,13 @@ public class CGameController : SingletonBehaviour<CGameController>
     private void Update()
     {
         mi_gameStageTimer -= Time.deltaTime;
+        mu_uiManager.SetTimerDisplay(mi_gameStageTimer);
 
         if (mi_gameStageTimer <= 0.0f ||
                             (mi_gameStage == EGameStage.SELECTION_PHASE && mu_PlayerDict.Count > 0
                             && mu_PlayerDict.Values.All(_o => _o.pu_isReady != 0)))
         {
             fu_ProcessNextStage();
-
 
             if (mi_gameStage == EGameStage.SELECTION_PHASE)
             {
@@ -96,20 +105,20 @@ public class CGameController : SingletonBehaviour<CGameController>
     {
         mu_PlayerDict.Add(device_id, new CPlayer(device_id));
 
+        int connected = AirConsole.instance.GetControllerDeviceIds().Count;
         if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 1) // TODO: set to min players
+            if (connected >= 2) // TODO: set to min players
             {
                 AirConsole.instance.SetActivePlayers(8);
 
-
-                /// TODO: richtiges Spiel Starten
-
-
                 mu_ocean.fu_CreateOcean(20, 4, 8);
                 fu_CreateViews();
+
+                mu_uiManager.SetStage(UIStage.HUD);
             }
         }
+        mu_uiManager.UpdateLobbyScreen(connected, 2);
     }
 
     void OnDisconnect(int device_id)
@@ -122,6 +131,12 @@ public class CGameController : SingletonBehaviour<CGameController>
             mu_PlayerDict.Remove(device_id);
         }
 
+        int connected = AirConsole.instance.GetControllerDeviceIds().Count;
+        if (connected < 2)
+        {
+            mu_uiManager.SetStage(UIStage.Lobby);
+        }
+        mu_uiManager.UpdateLobbyScreen(connected, 2);
 
         int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
         if (active_player != -1)

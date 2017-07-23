@@ -221,25 +221,25 @@ namespace Ocean
                 case EGameStage.MOVE_1:
                 {
                     portCannon = player.pu_movement1LeftMode == 1;
-                    starboardCannon = player.pu_movement1RightMode == 1;
+                    starboardCannon = player.pu_movement1RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_2:
                 {
                     portCannon = player.pu_movement2LeftMode == 1;
-                    starboardCannon = player.pu_movement2RightMode == 1;
+                    starboardCannon = player.pu_movement2RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_3:
                 {
                     portCannon = player.pu_movement3LeftMode == 1;
-                    starboardCannon = player.pu_movement3RightMode == 1;
+                    starboardCannon = player.pu_movement3RightMode == 2;
                 }
                 break;
                 case EGameStage.MOVE_4:
                 {
                     portCannon = player.pu_movement4LeftMode == 1;
-                    starboardCannon = player.pu_movement4RightMode == 1;
+                    starboardCannon = player.pu_movement4RightMode == 2;
                 }
                 break;
             }
